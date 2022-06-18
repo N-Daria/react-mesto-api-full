@@ -1,0 +1,11 @@
+.page {
+  background-color: black;
+  min-width: 320px;
+  max-width: 880px;
+  font-family: "Inter", Arial, sans-serif;
+  color: white;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0 auto;
+  width: 90%;
+}

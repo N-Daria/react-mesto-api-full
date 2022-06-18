@@ -1,0 +1,34 @@
+.profile__info {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  max-width: 66%;
+  width: 100%;
+}
+
+@media screen and (max-width: 899px) {
+  .profile__info {
+    justify-content: center;
+    max-width: 282px;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .profile__info {
+    margin: 15px 0 15px 15px;
+  }
+}
+
+/* .profile__info::after {
+  content: " ";
+  background-image: url(../../../images/edit.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 25px;
+  position: relative;
+  width: 30px;
+  top: 20px;
+  left: 20px;
+  height: 30px;
+  display: block;
+} */

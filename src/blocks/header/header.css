@@ -1,0 +1,23 @@
+.header {
+  margin: 28px 0;
+}
+
+.header::after {
+  content: " ";
+  height: 1px;
+  background-color: #545454;
+  opacity: 70%;
+  display: block;
+  margin-top: 27px;
+}
+
+@media screen and (min-width: 900px) {
+  .header {
+    margin: 45px 0 40px;
+  }
+
+  .header::after {
+    content: " ";
+    margin-top: 37px;
+  }
+}

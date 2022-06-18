@@ -1,0 +1,12 @@
+.popup__input_error {
+  border-bottom: 1px rgba(255, 0, 0, 1) solid;
+  margin: 0;
+}
+
+.popup__input_error:focus {
+  border-bottom: 1px rgba(255, 0, 0, 1) solid;
+}
+
+.popup__input_error:last-of-type {
+  margin: 0;
+}

@@ -1,0 +1,10 @@
+.profile__image-container {
+  background-image: url(../../../images/edit.svg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 25px;
+  width: 120px;
+  height: 120px;
+  display: block;
+  margin: 0 auto;
+}
