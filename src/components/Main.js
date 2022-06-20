@@ -1,4 +1,3 @@
-import { findRenderedComponentWithType } from "react-dom/test-utils"
 import { useState, useEffect } from "react";
 import api from "../utils/Api";
 import Card from "./Card";
@@ -6,8 +5,8 @@ import Card from "./Card";
 function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
 
   const [userName, changeName] = useState('');
-  const [userDescription, changeDescription] = useState();
-  const [userAvatar, changeNameAvatar] = useState();
+  const [userDescription, changeDescription] = useState('');
+  const [userAvatar, changeNameAvatar] = useState('');
 
   const [cards, setCards] = useState([]);
 
@@ -18,19 +17,25 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
         changeDescription(data.about);
         changeNameAvatar(data.avatar);
       })
-  }, [userName, userDescription, userAvatar])
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [])
 
   useEffect(() => {
-    api.get('cards').then((data) => {
-      setCards(
-        data.map((item) => ({
-          src: item.link,
-          title: item.name,
-          key: item._id,
-          likes: item.likes.length,
-        }))
-      )
-    })
+    api.get('cards')
+      .then((data) => {
+        setCards(
+          data.map((item) => ({
+            src: item.link,
+            title: item.name,
+            key: item._id,
+            likes: item.likes.length,
+          }))
+        )
+      }).catch((err) => {
+        console.log(err)
+      })
   }, [])
 
   return (
@@ -50,8 +55,7 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
       <section className="elements">
         <ul className="elements__gallery list">
 
-          {cards.map((card) => <Card {...card} onCardClick={onCardClick} />)}
-
+          {cards.map((card) => <Card {...card} onCardClick={onCardClick} key={card.key} />)}
         </ul>
       </section>
     </main >
