@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import '../index.css';
 import logo from '../images/logo.svg';
@@ -14,10 +14,17 @@ function App() {
   const [isAddPlacePopupOpen, changeStatePlase] = useState(false);
   const [isEditAvatarPopupOpen, changeStateAvatar] = useState(false);
 
+  const [selectedCard, showSelectedCard] = useState(false);
+
+  function handleCardClick(card) {
+    showSelectedCard(card);
+  }
+
   function closeAllPopups() {
     changeStateProfile(false);
     changeStateAvatar(false);
     changeStatePlase(false);
+    showSelectedCard('');
   }
 
   function handleEditProfileClick() {
@@ -35,7 +42,7 @@ function App() {
     <>
       <Header src={logo} alt="логотип" />
 
-      <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} />
+      <Main onCardClick={handleCardClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} />
 
       <Footer />
 
@@ -60,7 +67,7 @@ function App() {
 
       <PopupWithForm onClose={closeAllPopups} popupClass="delete" formClass="popup__form_confirmation" header="Вы уверены?" buttonText="Да" />
 
-      <ImagePopup onClose={closeAllPopups} />
+      <ImagePopup onClose={closeAllPopups} card={selectedCard} />
 
       <template id="card">
         <li className="elements__card">

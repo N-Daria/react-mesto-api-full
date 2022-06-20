@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import api from "../utils/Api";
 import Card from "./Card";
 
-function Main({ onEditAvatar, onEditProfile, onAddPlace }) {
+function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
 
   const [userName, changeName] = useState('');
   const [userDescription, changeDescription] = useState();
@@ -50,7 +50,7 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace }) {
       <section className="elements">
         <ul className="elements__gallery list">
 
-          {cards.map((card) => <Card {...card} />)}
+          {cards.map((card) => <Card {...card} onCardClick={onCardClick} />)}
 
         </ul>
       </section>

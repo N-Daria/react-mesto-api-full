@@ -4,7 +4,6 @@ export default function PopupWithForm({ isOpen, popupClass, formClass, onClose, 
     isOpen = 'popup_opened';
   }
 
-
   return (
     <section className={`${popupClass} popup ${isOpen}`}>
       <form className={`popup__form form ${formClass}`} name="popup__container">
