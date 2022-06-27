@@ -25,6 +25,7 @@
 @import url(./blocks/elements/__like/_active/elements__like_active.css);
 @import url(./blocks/elements/__info/elements__info.css);
 @import url(./blocks/elements/__remove/elements__remove.css);
+@import url(./blocks/elements/__remove/_hidden/elements__remove_hidden.css);
 @import url(./blocks/elements/__like-group/elements__like-group.css);
 @import url(./blocks/elements/__like-number/elements__like-number.css);
 

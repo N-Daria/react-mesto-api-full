@@ -1,26 +1,14 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import api from "../utils/Api";
 import Card from "./Card";
+import { CurrentUserContext } from '../contexts/CurrentUserContext'
 
 function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
 
-  const [userName, changeName] = useState('');
-  const [userDescription, changeDescription] = useState('');
-  const [userAvatar, changeNameAvatar] = useState('');
-
   const [cards, setCards] = useState([]);
 
-  useEffect(() => {
-    api.get('users/me')
-      .then(data => {
-        changeName(data.name);
-        changeDescription(data.about);
-        changeNameAvatar(data.avatar);
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }, [])
+  const currentUserContext = React.useContext(CurrentUserContext);
 
   useEffect(() => {
     api.get('cards')
@@ -30,7 +18,8 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
             src: item.link,
             title: item.name,
             key: item._id,
-            likes: item.likes.length,
+            likes: item.likes,
+            id: item._id,
           }))
         )
       }).catch((err) => {
@@ -42,12 +31,12 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
     <main className="content">
       <section className="profile">
         <div className="profile__image-container" onClick={onEditAvatar}>
-          <img src={userAvatar} alt="Фотография профиля" className="profile__avatar" />
+          <img src={currentUserContext.avatar} alt="Фотография профиля" className="profile__avatar" />
         </div>
         <div className="profile__info">
-          <h1 className="profile__header">{userName}</h1>
+          <h1 className="profile__header">{currentUserContext.name}</h1>
           <button className="profile__edit" type="button" aria-label="Редактировать" onClick={onEditProfile}></button>
-          <p className="profile__description">{userDescription}</p>
+          <p className="profile__description">{currentUserContext.about}</p>
         </div>
         <button className="profile__add" type="button" aria-label="Добавить новую фотографию" onClick={onAddPlace}></button>
       </section>
