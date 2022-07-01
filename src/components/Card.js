@@ -5,7 +5,7 @@ export default function Card(props) {
 
   const currentUserContext = React.useContext(CurrentUserContext);
 
-  const isOwn = currentUserContext._id === props.id;
+  const isOwn = currentUserContext._id === props._id;
   const removeButtonVisibility = isOwn ? 'elements__remove' : 'elements__remove_hidden';
 
   const isLiked = props.likes.some(i => i._id === currentUserContext._id);
@@ -13,21 +13,26 @@ export default function Card(props) {
 
   function handleClick() {
     const card = {
-      src: props.src,
-      title: props.title,
+      link: props.link,
+      name: props.name,
     }
     props.onCardClick(card);
+  }
+
+  function handleLikeClick() {
+    const cardId = props._id;
+    props.onCardLike(cardId, !isLiked);
   }
 
   return (
     <li className="elements__card">
       <figure className="elements__item">
         <button type="button" className={removeButtonVisibility} aria-label="Удалить фотографию"></button>
-        <img src={props.src} alt={props.title} className="elements__photo" onClick={handleClick} />
+        <img src={props.link} alt={props.name} className="elements__photo" onClick={handleClick} />
         <figcaption className="elements__info">
-          <p className="elements__text">{props.title}</p>
+          <p className="elements__text">{props.name}</p>
           <div className="elements__like-group">
-            <button type="button" className={`elements__like ${cardLikeButtonClassName}`} aria-label="Нравится"></button>
+            <button type="button" onClick={handleLikeClick} className={`elements__like ${cardLikeButtonClassName}`} aria-label="Нравится"></button>
             <p className="elements__like-number">{props.likes.length}</p>
           </div>
         </figcaption>
