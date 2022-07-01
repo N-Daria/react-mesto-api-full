@@ -10,6 +10,17 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
 
   const [cards, setCards] = useState([]);
 
+  function handleCardDelete(cardId) {
+    api.deleteCard(cardId)
+      .then((card) => {
+        setCards((state) => {
+          return state.filter((cardInCards) => {
+            return !(cardInCards._id === cardId);
+          })
+        })
+      })
+  }
+
   function handleCardLike(cardId, notLiked) {
     notLiked ?
       api.likeCard(cardId)
@@ -66,7 +77,9 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
             return <Card {...card}
               onCardLike={handleCardLike}
               onCardClick={onCardClick}
-              key={card._id} />
+              key={card._id}
+              onCardDelete={handleCardDelete}
+            />
           })}
         </ul>
       </section>

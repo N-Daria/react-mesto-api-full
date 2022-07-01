@@ -24,10 +24,15 @@ export default function Card(props) {
     props.onCardLike(cardId, !isLiked);
   }
 
+  function handleDeleteClick() {
+    const cardId = props._id;
+    props.onCardDelete(cardId);
+  }
+
   return (
     <li className="elements__card">
       <figure className="elements__item">
-        <button type="button" className={removeButtonVisibility} aria-label="Удалить фотографию"></button>
+        <button onClick={handleDeleteClick} type="button" className={removeButtonVisibility} aria-label="Удалить фотографию"></button>
         <img src={props.link} alt={props.name} className="elements__photo" onClick={handleClick} />
         <figcaption className="elements__info">
           <p className="elements__text">{props.name}</p>
