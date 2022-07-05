@@ -78,6 +78,7 @@ function App() {
   function handleAddPlaceSubmit(data) {
     api.postNewCard(data)
       .then((newCard) => {
+        debugger
         setCards([newCard, ...cards]);
       })
       .catch((err) => {
@@ -96,6 +97,9 @@ function App() {
             name: item.name,
             likes: item.likes,
             _id: item._id,
+            owner: {
+              _id: item.owner._id,
+            },
           }))
         )
       }).catch((err) => {
