@@ -4,58 +4,9 @@ import api from "../utils/Api";
 import Card from "./Card";
 import { CurrentUserContext } from '../contexts/CurrentUserContext'
 
-function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
+function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick, cards, onCardLike, onCardDelete }) {
 
   const currentUserContext = React.useContext(CurrentUserContext);
-
-  const [cards, setCards] = useState([]);
-
-  function handleCardDelete(cardId) {
-    api.deleteCard(cardId)
-      .then((card) => {
-        setCards((state) => {
-          return state.filter((cardInCards) => {
-            return !(cardInCards._id === cardId);
-          })
-        })
-      })
-  }
-
-  function handleCardLike(cardId, notLiked) {
-    notLiked ?
-      api.likeCard(cardId)
-        .then((newCard) => {
-          setCards((state) => {
-            return state.map((cardInCards) => {
-              return cardInCards._id === cardId ? newCard : cardInCards;
-            })
-          })
-        })
-      : api.deleteLikeCard(cardId)
-        .then((newCard) => {
-          setCards((state) => {
-            return state.map((cardInCards) => {
-              return cardInCards._id === cardId ? newCard : cardInCards;
-            })
-          })
-        })
-  }
-
-  useEffect(() => {
-    api.get('cards')
-      .then((data) => {
-        setCards(
-          data.map((item) => ({
-            link: item.link,
-            name: item.name,
-            likes: item.likes,
-            _id: item._id,
-          }))
-        )
-      }).catch((err) => {
-        console.log(err)
-      })
-  }, [])
 
   return (
     <main className="content">
@@ -75,10 +26,10 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
         <ul className="elements__gallery list">
           {cards.map(function (card) {
             return <Card {...card}
-              onCardLike={handleCardLike}
+              onCardLike={onCardLike}
               onCardClick={onCardClick}
               key={card._id}
-              onCardDelete={handleCardDelete}
+              onCardDelete={onCardDelete}
             />
           })}
         </ul>

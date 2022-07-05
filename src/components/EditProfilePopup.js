@@ -41,7 +41,6 @@ export default function EditProfilePopup(props) {
       buttonText="Сохранить"
       onSubmit={handleSubmit}
     >
-
       <input id="name-input"
         value={name || ""}
         onChange={inputChange}
@@ -50,8 +49,8 @@ export default function EditProfilePopup(props) {
         className="popup__input"
         required
         maxLength="40"
-        minLength="2" />
-
+        minLength="2"
+      />
       <span className="name-input-error"></span>
       <input id="description-input"
         value={description || ""}
@@ -61,8 +60,8 @@ export default function EditProfilePopup(props) {
         className="popup__input"
         required
         maxLength="200"
-        minLength="2" />
-
+        minLength="2"
+      />
       <span className="description-input-error"> </span>
     </PopupWithForm>
   )
