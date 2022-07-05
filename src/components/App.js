@@ -8,6 +8,7 @@ import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import api from '../utils/Api';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import EditProfilePopup from "./EditProfilePopup";
 
 function App() {
 
@@ -18,19 +19,6 @@ function App() {
   const [selectedCard, showSelectedCard] = useState(null);
 
   const [currentUser, setCurrentUser] = useState({});
-
-  // const [currentCards, setCurrentCards] = useState({});
-
-  // useEffect(() => {
-  //   Promise.all([api.get('users/me'), api.get('cards')])
-  //     .then(([user, cards]) => {
-  //       setCurrentUser(user);
-  //       setCurrentCards(cards);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err)
-  //     })
-  // }, [])
 
   useEffect(() => {
     api.get('users/me')
@@ -60,8 +48,19 @@ function App() {
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
   }
+
   function handleAddPlaceClick() {
     setIsAddPlacePopupOpen(true);
+  }
+
+  function handleUpdateUser(data) {
+    api.patchUserInfo(data)
+      .then((result) => {
+        setCurrentUser(result);
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   return (
@@ -77,19 +76,11 @@ function App() {
 
       <Footer />
 
-      <PopupWithForm
-        onClose={closeAllPopups}
+      <EditProfilePopup
         isOpen={isEditProfilePopupOpen}
-        popupClass="edit"
-        formClass="editForm"
-        header="Редактировать профиль"
-        buttonText="Сохранить">
-
-        <input id="name-input" type="text" name="name" className="popup__input" required maxLength="40" minLength="2" />
-        <span className="name-input-error"></span>
-        <input id="description-input" type="text" name="description" className="popup__input" required maxLength="200" minLength="2" />
-        <span className="description-input-error"> </span>
-      </PopupWithForm>
+        onClose={closeAllPopups}
+        onUpdateUser={handleUpdateUser}
+      />
 
       <PopupWithForm
         onClose={closeAllPopups}
