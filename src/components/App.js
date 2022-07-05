@@ -69,7 +69,6 @@ function App() {
   function handleAddPlaceSubmit(data) {
     api.postNewCard(data)
       .then((newCard) => {
-        debugger
         setCards([newCard, ...cards]);
       })
       .catch((err) => {

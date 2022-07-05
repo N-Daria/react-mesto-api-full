@@ -4,7 +4,6 @@ import React from "react";
 export default function Card(props) {
   const currentUserContext = React.useContext(CurrentUserContext);
 
-  debugger
   const isOwn = currentUserContext._id === props.owner._id;
   const removeButtonVisibility = isOwn ? 'elements__remove' : 'elements__remove_hidden';
 

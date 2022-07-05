@@ -2,8 +2,8 @@ export default function ImagePopup(props) {
 
   const open = props.card ? 'popup_opened' : '';
 
-  const image = props.card ? props.card.src : '';
-  const title = props.card ? props.card.title : '';
+  const image = props.card ? props.card.link : '';
+  const title = props.card ? props.card.name : '';
 
   return (
     <section className={`popup view ${open}`}>
