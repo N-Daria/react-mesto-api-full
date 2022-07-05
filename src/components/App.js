@@ -21,20 +21,9 @@ function App() {
   const [selectedCard, showSelectedCard] = useState(null);
 
   const [currentUser, setCurrentUser] = useState({});
+  const [cards, setCards] = useState([]);
 
-  useEffect(() => {
-    api.get('users/me')
-      .then((user) => {
-        setCurrentUser(user);
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }, [])
-
-  function handleCardClick(card) {
-    showSelectedCard(card);
-  }
+  // open/close popups 
 
   function closeAllPopups() {
     setIsEditProfilePopupOpen(false);
@@ -54,6 +43,8 @@ function App() {
   function handleAddPlaceClick() {
     setIsAddPlacePopupOpen(true);
   }
+
+  // popups submit changes
 
   function handleUpdateUser(data) {
     api.patchUserInfo(data)
@@ -86,26 +77,7 @@ function App() {
       })
   }
 
-  const [cards, setCards] = useState([]);
-
-  useEffect(() => {
-    api.get('cards')
-      .then((data) => {
-        setCards(
-          data.map((item) => ({
-            link: item.link,
-            name: item.name,
-            likes: item.likes,
-            _id: item._id,
-            owner: {
-              _id: item.owner._id,
-            },
-          }))
-        )
-      }).catch((err) => {
-        console.log(err)
-      })
-  }, [])
+  // card actions
 
   function handleCardDelete(cardId) {
     api.deleteCard(cardId)
@@ -137,6 +109,41 @@ function App() {
           })
         })
   }
+
+  function handleCardClick(card) {
+    showSelectedCard(card);
+  }
+
+  // gets initial cards list and user data
+
+  useEffect(() => {
+    api.get('cards')
+      .then((data) => {
+        setCards(
+          data.map((item) => ({
+            link: item.link,
+            name: item.name,
+            likes: item.likes,
+            _id: item._id,
+            owner: {
+              _id: item.owner._id,
+            },
+          }))
+        )
+      }).catch((err) => {
+        console.log(err)
+      })
+  }, [])
+
+  useEffect(() => {
+    api.get('users/me')
+      .then((user) => {
+        setCurrentUser(user);
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [])
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
