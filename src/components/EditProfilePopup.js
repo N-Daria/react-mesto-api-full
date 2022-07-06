@@ -9,17 +9,17 @@ export default function EditProfilePopup(props) {
   const [name, setName] = useState(currentUserContext.name);
   const [description, setDescription] = useState(currentUserContext.about);
 
-  const currentUser = useContext(CurrentUserContext);
-
   useEffect(() => {
-    setName(currentUser.name);
-    setDescription(currentUser.about);
-  }, [currentUser]);
+    setName(currentUserContext.name);
+    setDescription(currentUserContext.about);
+  }, [currentUserContext, props.isOpen]);
 
   function inputChange(event) {
-    event.target.name === 'name' ?
-      setName(`${event.target.value}`)
-      : setDescription(`${event.target.value}`);
+    if (event.target.name === 'name') {
+      setName(`${event.target.value}`);
+    } else if (event.target.name === 'description') {
+      setDescription(`${event.target.value}`);
+    }
   }
 
   function handleSubmit(e) {

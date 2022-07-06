@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import '../index.css';
 import logo from '../images/logo.svg';
 import Header from './Header';
 import Main from './Main';
@@ -18,7 +17,7 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
 
-  const [selectedCard, showSelectedCard] = useState(null);
+  const [selectedCard, setSelectedCard] = useState(null);
 
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
@@ -29,7 +28,7 @@ function App() {
     setIsEditProfilePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setIsAddPlacePopupOpen(false);
-    showSelectedCard(null);
+    setSelectedCard(null);
   }
 
   function handleEditProfileClick() {
@@ -81,67 +80,44 @@ function App() {
   function handleCardDelete(cardId) {
     api.deleteCard(cardId)
       .then((card) => {
-        setCards((state) => {
-          return state.filter((cardInCards) => {
-            return !(cardInCards._id === cardId);
-          })
-        })
+        setCards(state => state.filter(card => card._id !== cardId))
       })
   }
 
   function handleCardLike(cardId, notLiked) {
+    function onSetCards(newCard) {
+      setCards(state => state.map(cardInCards => cardInCards._id === cardId ? newCard : cardInCards));
+    }
+
     notLiked ?
       api.likeCard(cardId)
         .then((newCard) => {
-          setCards((state) => {
-            return state.map((cardInCards) => {
-              return cardInCards._id === cardId ? newCard : cardInCards;
-            })
-          })
+          onSetCards(newCard);
         })
       : api.deleteLikeCard(cardId)
         .then((newCard) => {
-          setCards((state) => {
-            return state.map((cardInCards) => {
-              return cardInCards._id === cardId ? newCard : cardInCards;
-            })
-          })
+          onSetCards(newCard);
         })
   }
 
   function handleCardClick(card) {
-    showSelectedCard(card);
+    setSelectedCard(card);
   }
 
   // gets initial cards list and user data
 
   useEffect(() => {
-    api.get('cards')
-      .then((data) => {
-        setCards(
-          data.map((item) => ({
-            link: item.link,
-            name: item.name,
-            likes: item.likes,
-            _id: item._id,
-            owner: {
-              _id: item.owner._id,
-            },
-          }))
-        )
-      }).catch((err) => {
-        console.log(err)
-      })
+    api.getCards()
+      .then(setCards)
+      .catch(console.log)
   }, [])
 
   useEffect(() => {
-    api.get('users/me')
+    api.getUserInfo()
       .then((user) => {
         setCurrentUser(user);
       })
-      .catch((err) => {
-        console.log(err)
-      })
+      .catch(console.log)
   }, [])
 
   return (

@@ -13,8 +13,17 @@ class Api {
     return Promise.reject(`Ошибка ${res.status}`);
   }
 
-  get(url) {
-    return fetch(`${this._url}/${url}`, {
+  getCards() {
+    return fetch(`${this._url}/cards`, {
+      headers: {
+        authorization: this._authorization
+      }
+    })
+      .then(this._checkResponse)
+  }
+
+  getUserInfo() {
+    return fetch(`${this._url}/users/me`, {
       headers: {
         authorization: this._authorization
       }
