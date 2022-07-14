@@ -15,14 +15,13 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import Register from "./Register";
 import Login from "./Login";
 import ProtectedRoute from "./ProtectedRoute";
-import InfoTooltip from "./InfoTooltip";
 
 function App() {
 
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
-  const [isRegistrationPopupOpen, setisRegistrationPopupOpen] = useState(true);
+  const [isRegistrationPopupOpen, setisRegistrationPopupOpen] = useState(false);
 
   const [selectedCard, setSelectedCard] = useState(null);
 
@@ -148,7 +147,12 @@ function App() {
 
         <Route exact path='/'>
           <CurrentUserContext.Provider value={currentUser}>
-            <Header src={logo} alt="логотип" />
+            <Header
+              src={logo}
+              alt="логотип"
+              actionText='Выйти'
+              redirect="/sign-in"
+              userEmail={currentUser.email} />
 
             <ProtectedRoute
               onCardClick={handleCardClick}
