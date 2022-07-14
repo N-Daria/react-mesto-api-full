@@ -1,5 +1,3 @@
-import { useRef } from "react";
-import { Link } from "react-router-dom";
 import EntrancePage from "./EntrancePage";
 
 export default function Register(props) {

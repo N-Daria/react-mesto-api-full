@@ -39,7 +39,7 @@ export default function EntrancePage({ header, buttonText, actionText, onSubmit 
       <span className="password-input-error"></span>
 
       <button className="popup__button form__button_entrance" type="submit">{buttonText}</button>
-      <a href='/sign-in' className={`${actionTextClass}`}>{actionText}</a>
+      <Link to="/sign-in" className={`${actionTextClass}`}>{actionText}</Link>
     </form>
   )
 

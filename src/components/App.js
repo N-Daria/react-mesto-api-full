@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import logo from '../images/logo.svg';
 import Header from './Header';
 import Main from './Main';
@@ -13,6 +13,7 @@ import AddPlacePopup from "./AddPlacePopup";
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import Register from "./Register";
 import Login from "./Login";
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
 
@@ -124,65 +125,66 @@ function App() {
   }, [])
 
   return (
-    <Switch>
+    <BrowserRouter>
+      <Switch>
+        <Route path='/sign-in'>
+          <Header src={logo} alt="логотип" actionText='Регистрация' redirect="/sign-up" />
+          <Login />
+        </Route>
 
-      <Route path='/sign-in'>
-        <Header src={logo} alt="логотип" actionText='Регистрация' redirect="/sign-up" />
-        <Login />
-      </Route>
+        <Route path='/sign-up'>
+          <Header src={logo} alt="логотип" actionText='Войти' redirect="/sign-in" />
+          <Register />
+        </Route>
 
-      <Route path='/sign-up'>
-        <Header src={logo} alt="логотип" actionText='Войти' redirect="/sign-in" />
-        <Register />
-      </Route>
+        <Route exact path='/'>
+          <CurrentUserContext.Provider value={currentUser}>
+            <Header src={logo} alt="логотип" />
 
-      <Route exact path='/'>
-        <CurrentUserContext.Provider value={currentUser}>
-          <Header src={logo} alt="логотип" />
+            <ProtectedRoute
+              onCardClick={handleCardClick}
+              onEditProfile={handleEditProfileClick}
+              onAddPlace={handleAddPlaceClick}
+              onEditAvatar={handleEditAvatarClick}
+              cards={cards}
+              onCardLike={handleCardLike}
+              onCardDelete={handleCardDelete}>
+            </ProtectedRoute>
 
-          <Main
-            onCardClick={handleCardClick}
-            onEditProfile={handleEditProfileClick}
-            onAddPlace={handleAddPlaceClick}
-            onEditAvatar={handleEditAvatarClick}
-            cards={cards}
-            onCardLike={handleCardLike}
-            onCardDelete={handleCardDelete}
-          />
+            <Footer />
 
-          <Footer />
+            <EditProfilePopup
+              isOpen={isEditProfilePopupOpen}
+              onClose={closeAllPopups}
+              onUpdateUser={handleUpdateUser}
+            />
 
-          <EditProfilePopup
-            isOpen={isEditProfilePopupOpen}
-            onClose={closeAllPopups}
-            onUpdateUser={handleUpdateUser}
-          />
+            <AddPlacePopup
+              isOpen={isAddPlacePopupOpen}
+              onClose={closeAllPopups}
+              onUpdatePlace={handleAddPlaceSubmit}
+            />
 
-          <AddPlacePopup
-            isOpen={isAddPlacePopupOpen}
-            onClose={closeAllPopups}
-            onUpdatePlace={handleAddPlaceSubmit}
-          />
+            <EditAvatarPopup
+              isOpen={isEditAvatarPopupOpen}
+              onClose={closeAllPopups}
+              onUpdateAvatar={handleUpdateAvatar}
+            />
 
-          <EditAvatarPopup
-            isOpen={isEditAvatarPopupOpen}
-            onClose={closeAllPopups}
-            onUpdateAvatar={handleUpdateAvatar}
-          />
+            <PopupWithForm
+              onClose={closeAllPopups}
+              popupClass="delete"
+              formClass="popup__form_confirmation"
+              header="Вы уверены?"
+              buttonText="Да"
+            />
 
-          <PopupWithForm
-            onClose={closeAllPopups}
-            popupClass="delete"
-            formClass="popup__form_confirmation"
-            header="Вы уверены?"
-            buttonText="Да"
-          />
+            <ImagePopup onClose={closeAllPopups} card={selectedCard} />
 
-          <ImagePopup onClose={closeAllPopups} card={selectedCard} />
-
-        </CurrentUserContext.Provider>
-      </Route>
-    </Switch>
+          </CurrentUserContext.Provider>
+        </Route>
+      </Switch>
+    </BrowserRouter>
   );
 }
 
