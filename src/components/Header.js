@@ -4,7 +4,7 @@ function Header(props) {
     <header className="header">
       <img src={props.src} alt={props.alt} className="header__logo" />
       <div className="header__text-box">
-        <a href="./" className="header__action-text">{props.actionText}</a>
+        <a href={props.redirect} className="header__action-text">{props.actionText}</a>
       </div>
     </header>
   )

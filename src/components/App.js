@@ -12,6 +12,7 @@ import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import Register from "./Register";
+import Login from "./Login";
 
 function App() {
 
@@ -126,11 +127,12 @@ function App() {
     <Switch>
 
       <Route path='/sign-in'>
-
+        <Header src={logo} alt="логотип" actionText='Регистрация' redirect="/sign-up" />
+        <Login />
       </Route>
 
       <Route path='/sign-up'>
-        <Header src={logo} alt="логотип" actionText='Войти' />
+        <Header src={logo} alt="логотип" actionText='Войти' redirect="/sign-in" />
         <Register />
       </Route>
 

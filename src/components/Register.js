@@ -4,18 +4,17 @@ import EntrancePage from "./EntrancePage";
 
 export default function Register(props) {
 
-  const email = useRef();
-  const password = useRef();
-
   function handleSubmit() {
     debugger
   }
 
   return (
-    <EntrancePage>
-
-    </EntrancePage>
-
+    <EntrancePage
+      header="Регистрация"
+      buttonText="Зарегистрироваться"
+      onSubmit={handleSubmit}
+      actionText="Уже зарегистрированы? Войти"
+    />
   )
 
 }

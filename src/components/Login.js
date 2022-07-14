@@ -1,6 +1,16 @@
+import EntrancePage from "./EntrancePage"
+
 export default function Login() {
 
+  function handleSubmit() {
+    debugger
+  }
+
   return (
-    <h1>jhgjb,jbj</h1>
+    <EntrancePage
+      header="Вход"
+      buttonText="Войти"
+      onSubmit={handleSubmit}
+    />
   )
 }

@@ -1,0 +1,40 @@
+.form_entrance {
+  background-color: inherit;
+  color: inherit;
+  margin: 63px auto;
+  position: static;
+  padding: 0 36px;
+}
+
+.form__header_entrance {
+  text-align: center;
+}
+
+.form__input_entrance {
+  background-color: inherit;
+  color: #CCCCCC;
+  border: none;
+  border-bottom: 1px #CCCCCC solid;
+}
+
+.form__button_entrance {
+  margin: 170px auto 15px;
+  color: black;
+  background-color: white;
+}
+
+.form__log-in {
+  color: inherit;
+  text-decoration: none;
+  text-align: center;
+
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+
+  margin: 0;
+}
+
+.form__log-in_hidden {
+  display: none;
+}
