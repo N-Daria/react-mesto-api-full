@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import logo from '../images/logo.svg';
+import succsess from '../images/succsess.svg'
+import fail from '../images/fail.svg'
 import Header from './Header';
-import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
@@ -14,12 +15,14 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import Register from "./Register";
 import Login from "./Login";
 import ProtectedRoute from "./ProtectedRoute";
+import InfoTooltip from "./InfoTooltip";
 
 function App() {
 
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+  const [isRegistrationPopupOpen, setisRegistrationPopupOpen] = useState(true);
 
   const [selectedCard, setSelectedCard] = useState(null);
 
@@ -33,6 +36,7 @@ function App() {
     setIsEditAvatarPopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setSelectedCard(null);
+    setisRegistrationPopupOpen(false);
   }
 
   function handleEditProfileClick() {
@@ -134,7 +138,12 @@ function App() {
 
         <Route path='/sign-up'>
           <Header src={logo} alt="логотип" actionText='Войти' redirect="/sign-in" />
-          <Register />
+          <Register
+            imagesuccsess={succsess}
+            imagefail={fail}
+            isOpen={isRegistrationPopupOpen}
+            onClose={closeAllPopups}
+          />
         </Route>
 
         <Route exact path='/'>

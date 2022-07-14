@@ -38,3 +38,15 @@
 .form__log-in_hidden {
   display: none;
 }
+
+
+.form_login {
+  padding: 0 36px;
+}
+
+.form__image {
+  display: block;
+  margin: 60px auto 22px;
+  width: 100%;
+  max-width: 120px;
+}
