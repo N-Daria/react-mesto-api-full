@@ -9,11 +9,14 @@
   opacity: 70%;
   display: block;
   margin-top: 27px;
+  width: 100%;
 }
 
 @media screen and (min-width: 900px) {
   .header {
     margin: 45px 0 40px;
+    display: flex;
+    flex-wrap: wrap;
   }
 
   .header::after {
