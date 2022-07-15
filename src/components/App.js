@@ -16,6 +16,7 @@ import Register from "./Register";
 import Login from "./Login";
 import ProtectedRoute from "./ProtectedRoute";
 import Main from "./Main";
+import InfoTooltip from "./InfoTooltip";
 import { checkToken, register, authorize } from '../utils/Authorization';
 
 function App() {
@@ -36,6 +37,11 @@ function App() {
     email: ''
   });
   const history = useHistory();
+
+  const [popupRegistrationData, setPopupRegistrationData] = useState({
+    photoUrl: '',
+    header: ''
+  });
 
   // gets initial cards list and user data
 
@@ -142,6 +148,22 @@ function App() {
     setSelectedCard(card);
   }
 
+  function changeRegistrationStatus(isRegistrationOk) {
+    setisRegistrationPopupOpen(true);
+
+    if (isRegistrationOk) {
+      setPopupRegistrationData({
+        photoUrl: succsess,
+        header: 'Вы успешно зарегистрировались!'
+      });
+    } else {
+      setPopupRegistrationData({
+        photoUrl: fail,
+        header: 'Что-то пошло не так! Попробуйте ещё раз.'
+      });
+    }
+  }
+
   // registration, login & logout
 
   function handleRegister(data) {
@@ -155,9 +177,13 @@ function App() {
           })
         }
         setLoggedIn(true);
-        history.push('/');
+        changeRegistrationStatus(true);
+        history.push('/sign-in');
       })
-      .catch(console.log)
+      .catch((err) => {
+        console.log(err);
+        changeRegistrationStatus(false);
+      })
   }
 
   function handleLogin(data) {
@@ -189,6 +215,8 @@ function App() {
     debugger
   }
 
+  // confirmation of the user's existence
+
   function handleTokenCheck() {
     const id = localStorage.getItem('id');
     if (id) {
@@ -207,7 +235,6 @@ function App() {
     }
   }
 
-
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <Switch>
@@ -221,11 +248,12 @@ function App() {
         <Route path='/sign-up'>
           <Header src={logo} alt="логотип" actionText='Войти' redirect="/sign-in" />
           <Register
-            imagesuccsess={succsess}
-            imagefail={fail}
+            handleRegister={handleRegister}
+          />
+          <InfoTooltip
+            data={popupRegistrationData}
             isOpen={isRegistrationPopupOpen}
             onClose={closeAllPopups}
-            handleRegister={handleRegister}
           />
         </Route>
 

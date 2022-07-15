@@ -1,14 +1,14 @@
-export default function InfoTooltip({ isOpen, headerPopup, image, onClose }) {
+export default function InfoTooltip({ ...props }) {
 
-  const open = isOpen ? 'popup_opened' : '';
+  const open = props.isOpen ? 'popup_opened' : '';
 
   return (
     <section className={`popup ${open}`}>
       <form className={`popup__form form_login`}>
-        <button onClick={onClose} type="button" className="popup__close" aria-label="Закрыть"></button>
-        <img src={image} alt={headerPopup} className='form__image' />
-        <h2 className="popup__header form__header_entrance ">{headerPopup}</h2>
+        <button onClick={props.onClose} type="button" className="popup__close" aria-label="Закрыть"></button>
+        <img src={props.data.photoUrl} alt={props.data.header} className='form__image' />
+        <h2 className="popup__header form__header_entrance ">{props.data.header}</h2>
       </form>
     </section >
   )
-}
+} 
