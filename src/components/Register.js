@@ -27,15 +27,13 @@ export default function Register({ ...props }) {
   // Imagefail = { fail }
   // props.headerPopup = { 'Вы успешно зарегистрировались!'};
 
-  function handleSubmit(event) {
-
-    console.log(data)
-
-
+  function handleSubmit(data) {
+    props.handleRegister(data);
 
     // if evrth is ok -> set header to form and image
-    debugger
   }
+
+
 
   return (
     <>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 import logo from '../images/logo.svg';
 import succsess from '../images/succsess.svg'
 import fail from '../images/fail.svg'
@@ -16,6 +16,7 @@ import Register from "./Register";
 import Login from "./Login";
 import ProtectedRoute from "./ProtectedRoute";
 import Main from "./Main";
+import { checkToken, register } from '../utils/Authorization';
 
 function App() {
 
@@ -29,7 +30,29 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
 
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [userAuthData, setUserAuthData] = useState({});
+  const history = useHistory();
+
+  // gets initial cards list and user data
+
+  useEffect(() => {
+    api.getCards()
+      .then(setCards)
+      .catch(console.log)
+  }, [])
+
+  useEffect(() => {
+    api.getUserInfo()
+      .then((user) => {
+        setCurrentUser(user);
+      })
+      .catch(console.log)
+  }, [])
+
+  useEffect(() => {
+    handleTokenCheck()
+  }, [])
 
   // open/close popups 
 
@@ -114,21 +137,45 @@ function App() {
     setSelectedCard(card);
   }
 
-  // gets initial cards list and user data
+  // registration 
 
-  useEffect(() => {
-    api.getCards()
-      .then(setCards)
-      .catch(console.log)
-  }, [])
-
-  useEffect(() => {
-    api.getUserInfo()
-      .then((user) => {
-        setCurrentUser(user);
+  function handleRegister(data) {
+    register(data)
+      .then((res) => {
+        if (res._id) {
+          localStorage.setItem('id', data._id);
+          setUserAuthData({
+            email: data.email,
+            id: data._id
+          })
+        }
+        setLoggedIn(true);
+        history.push('/');
       })
       .catch(console.log)
-  }, [])
+  }
+
+  function handleTokenCheck() {
+    const id = localStorage.getItem('id');
+    debugger
+
+    if (id) {
+      checkToken(id)
+        .then((res) => {
+          if (res._id) {
+            localStorage.setItem('id', id);
+            setUserAuthData({
+              id: id,
+              email: res.email
+            })
+          }
+          setLoggedIn(true);
+          history.push('/');
+          debugger
+        });
+    }
+  }
+
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -145,6 +192,7 @@ function App() {
             imagefail={fail}
             isOpen={isRegistrationPopupOpen}
             onClose={closeAllPopups}
+            handleRegister={handleRegister}
           />
         </Route>
 

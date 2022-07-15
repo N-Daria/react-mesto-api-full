@@ -14,8 +14,7 @@ export default function EntrancePage({ header, buttonText, actionText, onSubmit,
 
   function handleSubmit(e) {
     e.preventDefault();
-
-    onSubmit();
+    onSubmit({ email: email.current.value, password: password.current.value });
   }
 
   return (
