@@ -1,8 +1,13 @@
-import Main from "./Main"
+import { Children, Component } from "react"
+import { Redirect, Route } from "react-router-dom"
 
-export default function ProtectedRoute({ ...props }) {
+export default function ProtectedRoute({ component: Component, ...props }) {
 
   return (
-    <Main {...props} />
+    <Route>
+      {
+        () => props.loggedIn ? <Component {...props} /> : <Redirect to='/sign-in' />
+      }
+    </Route>
   )
 }

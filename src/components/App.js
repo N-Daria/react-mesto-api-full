@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import logo from '../images/logo.svg';
 import succsess from '../images/succsess.svg'
 import fail from '../images/fail.svg'
@@ -15,6 +15,7 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import Register from "./Register";
 import Login from "./Login";
 import ProtectedRoute from "./ProtectedRoute";
+import Main from "./Main";
 
 function App() {
 
@@ -27,6 +28,8 @@ function App() {
 
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
+
+  const [loggedIn, setLoggedIn] = useState(true);
 
   // open/close popups 
 
@@ -128,7 +131,7 @@ function App() {
   }, [])
 
   return (
-    <BrowserRouter>
+    <CurrentUserContext.Provider value={currentUser}>
       <Switch>
         <Route path='/sign-in'>
           <Header src={logo} alt="логотип" actionText='Регистрация' redirect="/sign-up" />
@@ -145,59 +148,65 @@ function App() {
           />
         </Route>
 
-        <Route exact path='/'>
-          <CurrentUserContext.Provider value={currentUser}>
-            <Header
-              src={logo}
-              alt="логотип"
-              actionText='Выйти'
-              redirect="/sign-in"
-              userEmail={currentUser.email} />
+        <ProtectedRoute exact path='/' loggedIn={loggedIn} component={Footer}>
 
-            <ProtectedRoute
-              onCardClick={handleCardClick}
-              onEditProfile={handleEditProfileClick}
-              onAddPlace={handleAddPlaceClick}
-              onEditAvatar={handleEditAvatarClick}
-              cards={cards}
-              onCardLike={handleCardLike}
-              onCardDelete={handleCardDelete}>
-            </ProtectedRoute>
+          <Header
+            src={logo}
+            alt="логотип"
+            actionText='Выйти'
+            redirect="/sign-in"
+            userEmail={currentUser.email} />
 
-            <Footer />
+          <Main
+            onCardClick={handleCardClick}
+            onEditProfile={handleEditProfileClick}
+            onAddPlace={handleAddPlaceClick}
+            onEditAvatar={handleEditAvatarClick}
+            cards={cards}
+            onCardLike={handleCardLike}
+            onCardDelete={handleCardDelete}>
+          </Main>
 
-            <EditProfilePopup
-              isOpen={isEditProfilePopupOpen}
-              onClose={closeAllPopups}
-              onUpdateUser={handleUpdateUser}
-            />
+          <Footer />
 
-            <AddPlacePopup
-              isOpen={isAddPlacePopupOpen}
-              onClose={closeAllPopups}
-              onUpdatePlace={handleAddPlaceSubmit}
-            />
+        </ ProtectedRoute>
 
-            <EditAvatarPopup
-              isOpen={isEditAvatarPopupOpen}
-              onClose={closeAllPopups}
-              onUpdateAvatar={handleUpdateAvatar}
-            />
-
-            <PopupWithForm
-              onClose={closeAllPopups}
-              popupClass="delete"
-              formClass="popup__form_confirmation"
-              header="Вы уверены?"
-              buttonText="Да"
-            />
-
-            <ImagePopup onClose={closeAllPopups} card={selectedCard} />
-
-          </CurrentUserContext.Provider>
+        <Route path='*'>
+          {loggedIn ? <Redirect to="/sign-in" /> : <Redirect to="/sign-up" />}
         </Route>
+
       </Switch>
-    </BrowserRouter>
+
+
+      <EditProfilePopup
+        isOpen={isEditProfilePopupOpen}
+        onClose={closeAllPopups}
+        onUpdateUser={handleUpdateUser}
+      />
+
+      <AddPlacePopup
+        isOpen={isAddPlacePopupOpen}
+        onClose={closeAllPopups}
+        onUpdatePlace={handleAddPlaceSubmit}
+      />
+
+      <EditAvatarPopup
+        isOpen={isEditAvatarPopupOpen}
+        onClose={closeAllPopups}
+        onUpdateAvatar={handleUpdateAvatar}
+      />
+
+      <PopupWithForm
+        onClose={closeAllPopups}
+        popupClass="delete"
+        formClass="popup__form_confirmation"
+        header="Вы уверены?"
+        buttonText="Да"
+      />
+
+      <ImagePopup onClose={closeAllPopups} card={selectedCard} />
+
+    </CurrentUserContext.Provider>
   );
 }
 
