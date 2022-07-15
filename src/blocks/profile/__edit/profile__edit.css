@@ -1,0 +1,25 @@
+.profile__edit {
+  background-image: url(../../../images/edit.svg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 7px;
+  width: 7px;
+  height: 7px;
+  padding: 4px 4px;
+  border: 1px solid white;
+  cursor: pointer;
+  transition: 0.4s opacity ease;
+  background-color: inherit;
+  box-sizing: content-box;
+}
+
+@media screen and (min-width: 900px) {
+  .profile__edit {
+    margin: 0 19px;
+    padding: 8px 8px;
+  }
+}
+
+.profile__edit:hover {
+  opacity: 0.5;
+}

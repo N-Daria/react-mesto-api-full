@@ -1,0 +1,4 @@
+.view::after {
+  content: "";
+  opacity: 0.9;
+}

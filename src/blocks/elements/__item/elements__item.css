@@ -1,0 +1,8 @@
+.elements__item {
+  margin: 0 auto;
+  font-size: 0;
+  max-width: 282px;
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+}
