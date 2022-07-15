@@ -1,15 +1,20 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 
-export default function EntrancePage({ header, buttonText, actionText, onSubmit }) {
+export default function EntrancePage({ header, buttonText, actionText, onSubmit, onChange }) {
 
   const actionTextClass = (actionText === undefined ? 'form__log-in_hidden' : 'form__log-in');
 
   const email = useRef();
   const password = useRef();
 
-  function handleSubmit() {
-    debugger
+  function handleChange(e) {
+    onChange({ email: email.current.value, password: password.current.value });
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
     onSubmit();
   }
 
@@ -24,6 +29,7 @@ export default function EntrancePage({ header, buttonText, actionText, onSubmit 
         placeholder="Email"
         required
         ref={email}
+        onChange={handleChange}
       />
       <span className="email-input-error"></span>
 
@@ -35,6 +41,7 @@ export default function EntrancePage({ header, buttonText, actionText, onSubmit 
         placeholder="Пароль"
         required
         ref={password}
+        onChange={handleChange}
       />
       <span className="password-input-error"></span>
 
