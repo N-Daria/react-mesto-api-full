@@ -1,7 +1,7 @@
 import EntrancePage from "./EntrancePage"
 import { useState } from "react";
 
-export default function Login() {
+export default function Login({ ...props }) {
 
   const [data, setData] = useState({
     username: '',
@@ -22,11 +22,8 @@ export default function Login() {
     ))
   }
 
-  function handleSubmit(event) {
-
-    console.log(data)
-
-    debugger
+  function handleSubmit(data) {
+    props.handleLogin(data);
   }
 
   return (

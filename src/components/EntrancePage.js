@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 export default function EntrancePage({ header, buttonText, actionText, onSubmit, onChange }) {
 
@@ -15,6 +15,12 @@ export default function EntrancePage({ header, buttonText, actionText, onSubmit,
   function handleSubmit(e) {
     e.preventDefault();
     onSubmit({ email: email.current.value, password: password.current.value });
+  }
+
+  const history = useHistory();
+
+  function redirect() {
+    history.push("/sign-in");
   }
 
   return (
@@ -45,7 +51,7 @@ export default function EntrancePage({ header, buttonText, actionText, onSubmit,
       <span className="password-input-error"></span>
 
       <button className="popup__button form__button_entrance" type="submit">{buttonText}</button>
-      <Link to="/sign-in" className={`${actionTextClass}`}>{actionText}</Link>
+      <p onClick={redirect} className={`${actionTextClass}`}>{actionText}</p>
     </form>
   )
 

@@ -5,6 +5,7 @@
   margin: 0;
   text-transform: capitalize;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .header__action-text:visited {

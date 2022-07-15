@@ -16,7 +16,7 @@ import Register from "./Register";
 import Login from "./Login";
 import ProtectedRoute from "./ProtectedRoute";
 import Main from "./Main";
-import { checkToken, register } from '../utils/Authorization';
+import { checkToken, register, authorize } from '../utils/Authorization';
 
 function App() {
 
@@ -31,7 +31,10 @@ function App() {
   const [cards, setCards] = useState([]);
 
   const [loggedIn, setLoggedIn] = useState(false);
-  const [userAuthData, setUserAuthData] = useState({});
+  const [userAuthData, setUserAuthData] = useState({
+    id: '',
+    email: ''
+  });
   const history = useHistory();
 
   // gets initial cards list and user data
@@ -49,6 +52,8 @@ function App() {
       })
       .catch(console.log)
   }, [])
+
+  // check if user is already registered
 
   useEffect(() => {
     handleTokenCheck()
@@ -137,7 +142,7 @@ function App() {
     setSelectedCard(card);
   }
 
-  // registration 
+  // registration, login & logout
 
   function handleRegister(data) {
     register(data)
@@ -155,10 +160,37 @@ function App() {
       .catch(console.log)
   }
 
+  function handleLogin(data) {
+    authorize(data)
+      .then((res) => {
+        console.log(res)
+        if (res.token) {
+          localStorage.setItem('id', res.token);
+          setUserAuthData((oldData) => (
+            {
+              ...oldData,
+              id: res.token,
+            }
+          ))
+        }
+        setLoggedIn(true);
+        history.push('/');
+      })
+      .catch(console.log)
+  }
+
+  function handleLogout() {
+    localStorage.removeItem('id');
+    setUserAuthData({
+      id: '',
+      email: ''
+    });
+    setLoggedIn(false);
+    debugger
+  }
+
   function handleTokenCheck() {
     const id = localStorage.getItem('id');
-    debugger
-
     if (id) {
       checkToken(id)
         .then((res) => {
@@ -171,7 +203,6 @@ function App() {
           }
           setLoggedIn(true);
           history.push('/');
-          debugger
         });
     }
   }
@@ -182,7 +213,9 @@ function App() {
       <Switch>
         <Route path='/sign-in'>
           <Header src={logo} alt="логотип" actionText='Регистрация' redirect="/sign-up" />
-          <Login />
+          <Login
+            handleLogin={handleLogin}
+          />
         </Route>
 
         <Route path='/sign-up'>
@@ -203,7 +236,9 @@ function App() {
             alt="логотип"
             actionText='Выйти'
             redirect="/sign-in"
-            userEmail={currentUser.email} />
+            userEmail={currentUser.email}
+            handleLogout={handleLogout}
+          />
 
           <Main
             onCardClick={handleCardClick}
