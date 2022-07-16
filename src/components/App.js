@@ -46,17 +46,21 @@ function App() {
   // gets initial cards list and user data
 
   useEffect(() => {
-    api.getCards()
-      .then(setCards)
-      .catch(console.log)
+    if (localStorage.getItem('id')) {
+      api.getCards()
+        .then(setCards)
+        .catch(console.log)
+    }
   }, [])
 
   useEffect(() => {
-    api.getUserInfo()
-      .then((user) => {
-        setCurrentUser(user);
-      })
-      .catch(console.log)
+    if (localStorage.getItem('id')) {
+      api.getUserInfo()
+        .then((user) => {
+          setCurrentUser(user);
+        })
+        .catch(console.log)
+    }
   }, [])
 
   // check if user is already registered
@@ -126,6 +130,7 @@ function App() {
       .then((card) => {
         setCards(state => state.filter(card => card._id !== cardId))
       })
+      .catch(console.log)
   }
 
   function handleCardLike(cardId, notLiked) {
@@ -142,6 +147,7 @@ function App() {
         .then((newCard) => {
           onSetCards(newCard);
         })
+        .catch(console.log)
   }
 
   function handleCardClick(card) {
@@ -192,17 +198,16 @@ function App() {
         console.log(res)
         if (res.token) {
           localStorage.setItem('id', res.token);
-          setUserAuthData((oldData) => (
-            {
-              ...oldData,
-              id: res.token,
-            }
-          ))
+          setUserAuthData({
+            email: res.email,
+            id: res.token,
+          })
         }
         setLoggedIn(true);
         history.push('/');
       })
       .catch(console.log)
+    changeRegistrationStatus(false);
   }
 
   function handleLogout() {
@@ -212,7 +217,6 @@ function App() {
       email: ''
     });
     setLoggedIn(false);
-    debugger
   }
 
   // confirmation of the user's existence
@@ -222,16 +226,17 @@ function App() {
     if (id) {
       checkToken(id)
         .then((res) => {
-          if (res._id) {
+          if (res.data._id) {
             localStorage.setItem('id', id);
             setUserAuthData({
               id: id,
-              email: res.email
+              email: res.data.email
             })
           }
           setLoggedIn(true);
           history.push('/');
-        });
+        })
+        .catch(console.log)
     }
   }
 
@@ -250,11 +255,6 @@ function App() {
           <Register
             handleRegister={handleRegister}
           />
-          <InfoTooltip
-            data={popupRegistrationData}
-            isOpen={isRegistrationPopupOpen}
-            onClose={closeAllPopups}
-          />
         </Route>
 
         <ProtectedRoute exact path='/' loggedIn={loggedIn} >
@@ -264,8 +264,9 @@ function App() {
             alt="логотип"
             actionText='Выйти'
             redirect="/sign-in"
-            userEmail={currentUser.email}
+            userEmail={userAuthData.email}
             handleLogout={handleLogout}
+            isAuth={loggedIn}
           />
 
           <Main
@@ -288,6 +289,11 @@ function App() {
 
       </Switch>
 
+      <InfoTooltip
+        data={popupRegistrationData}
+        isOpen={isRegistrationPopupOpen}
+        onClose={closeAllPopups}
+      />
 
       <EditProfilePopup
         isOpen={isEditProfilePopupOpen}
