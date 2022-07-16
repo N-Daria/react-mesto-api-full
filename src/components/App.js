@@ -46,22 +46,22 @@ function App() {
   // gets initial cards list and user data
 
   useEffect(() => {
-    if (localStorage.getItem('id')) {
+    if (loggedIn) {
       api.getCards()
         .then(setCards)
         .catch(console.log)
     }
-  }, [])
+  }, [loggedIn])
 
   useEffect(() => {
-    if (localStorage.getItem('id')) {
+    if (loggedIn) {
       api.getUserInfo()
         .then((user) => {
           setCurrentUser(user);
         })
         .catch(console.log)
     }
-  }, [])
+  }, [loggedIn])
 
   // check if user is already registered
 
@@ -195,19 +195,20 @@ function App() {
   function handleLogin(data) {
     authorize(data)
       .then((res) => {
-        console.log(res)
         if (res.token) {
           localStorage.setItem('id', res.token);
           setUserAuthData({
-            email: res.email,
+            email: data.email,
             id: res.token,
           })
         }
         setLoggedIn(true);
         history.push('/');
       })
-      .catch(console.log)
-    changeRegistrationStatus(false);
+      .catch((err) => {
+        console.log(err)
+        changeRegistrationStatus(false);
+      })
   }
 
   function handleLogout() {

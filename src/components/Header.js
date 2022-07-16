@@ -17,8 +17,8 @@ function Header(props) {
     <header className="header">
       <img src={props.src} alt={props.alt} className="header__logo" />
       <div className="header__text-box">
-        <p className={`header__action-text ${actionClass}`} onClick={redirect}>{props.actionText}</p>
         <p className={email}>{props.userEmail}</p>
+        <p className={`header__action-text ${actionClass}`} onClick={redirect}>{props.actionText}</p>
       </div>
     </header >
   )
