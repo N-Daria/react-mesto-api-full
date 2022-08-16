@@ -1,21 +1,28 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const { userRouters } = require('./routes/user')
+const { userRouters } = require('./routes/user');
+const { cardRouters } = require('./routes/card')
 
 const { PORT = 3000 } = process.env;
 const app = express();
-
-app.use(express.json())
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
 });
 
-app.use(userRouters)
+app.use(express.json())
 
-// app.get('/', (req, res) => {
-//   res.send('send users list hbkjhb');
-// })
+app.use((req, res, next) => {
+  req.user = {
+    _id: '62f39dfeaedf19d711093bc2'
+  };
+
+  next();
+});
+
+app.use(userRouters);
+app.use(cardRouters);
+
 
 app.listen(PORT, () => {
   console.log('Server listens port 3000')
