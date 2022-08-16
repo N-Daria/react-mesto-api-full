@@ -6,9 +6,15 @@ const { cardRouters } = require('./routes/card')
 const { PORT = 3000 } = process.env;
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/mestodb', {
-  useNewUrlParser: true,
-});
+async function startServer() {
+  await mongoose.connect('mongodb://localhost:27017/mestodb', {
+    useNewUrlParser: true,
+  });
+
+  await app.listen(PORT, () => {
+    console.log('Server listens port 3000')
+  });
+}
 
 app.use(express.json())
 
@@ -23,7 +29,4 @@ app.use((req, res, next) => {
 app.use(userRouters);
 app.use(cardRouters);
 
-
-app.listen(PORT, () => {
-  console.log('Server listens port 3000')
-});
+startServer();
