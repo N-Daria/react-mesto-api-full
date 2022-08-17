@@ -1,0 +1,23 @@
+{
+  "name": "backend-mesto",
+  "version": "1.0.0",
+  "description": "[![Tests for sprint 13](https://github.com/N-Daria/express-mesto-gha/actions/workflows/tests-13-sprint.yml/badge.svg)](https://github.com/N-Daria/express-mesto-gha/actions/workflows/tests-13-sprint.yml) [![Tests for sprint 14](https: //github.com/N-Daria/express-mesto-gha/actions/workflows/tests-14-sprint.yml/badge.svg)](https://github.com/N-Daria/express-mesto-gha/actions/workflows/tests-14-sprint.yml)",
+  "main": "index.js",
+  "scripts": {
+    "lint": "npx eslint .",
+    "start": "node ./app.js",
+    "dev": "nodemon ./app.js"
+  },
+  "author": "Daria",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.20.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "nodemon": "^2.0.19"
+  },
+  "dependencies": {
+    "express": "^4.18.1",
+    "mongoose": "^6.5.1"
+  }
+}
