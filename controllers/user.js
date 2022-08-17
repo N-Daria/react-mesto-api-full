@@ -13,7 +13,7 @@ module.exports.createUser = (req, res) => {
         const newErr = new ValidationError('Переданы некорректные данные');
         return res.status(newErr.statusCode).send(newErr.message);
       }
-      const otherErr = new OtherError(`Произошла ошибка: ${err.name}, ${err.message}`);
+      const otherErr = new OtherError('На сервере произошла ошибка');
       return res.status(otherErr.statusCode).send({ message: otherErr.message });
     });
 };
@@ -27,7 +27,7 @@ module.exports.getUser = (req, res) => {
     .catch((err) => {
       if (err.name === 'UndefinedError') return res.status(err.statusCode).send({ message: err.message });
 
-      const otherErr = new OtherError(`Произошла ошибка: ${err.name}, ${err.message}`);
+      const otherErr = new OtherError('На сервере произошла ошибка');
       return res.status(otherErr.statusCode).send({ message: otherErr.message });
     });
 };
@@ -35,8 +35,8 @@ module.exports.getUser = (req, res) => {
 module.exports.getUsers = (req, res) => {
   User.find({})
     .then((user) => res.send({ data: user }))
-    .catch((err) => {
-      const otherErr = new OtherError(`Произошла ошибка: ${err.name}, ${err.message}`);
+    .catch(() => {
+      const otherErr = new OtherError('На сервере произошла ошибка');
       return res.status(otherErr.statusCode).send({ message: otherErr.message });
     });
 };
@@ -67,7 +67,7 @@ module.exports.updateProfileInfo = (req, res) => {
         const newErr = new ValidationError('Переданы некорректные данные');
         return res.status(newErr.statusCode).send(newErr.message);
       }
-      const otherErr = new OtherError(`Произошла ошибка: ${err.name}, ${err.message}`);
+      const otherErr = new OtherError('На сервере произошла ошибка');
       return res.status(otherErr.statusCode).send({ message: otherErr.message });
     });
 };
@@ -97,7 +97,7 @@ module.exports.updateProfilePhoto = (req, res) => {
         const newErr = new ValidationError('Переданы некорректные данные');
         return res.status(newErr.statusCode).send(newErr.message);
       }
-      const otherErr = new OtherError(`Произошла ошибка: ${err.name}, ${err.message}`);
+      const otherErr = new OtherError('На сервере произошла ошибка');
       return res.status(otherErr.statusCode).send({ message: otherErr.message });
     });
 };

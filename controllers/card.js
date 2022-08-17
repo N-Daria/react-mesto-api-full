@@ -14,7 +14,7 @@ module.exports.createCard = (req, res) => {
         const newErr = new ValidationError('Переданы некорректные данные');
         return res.status(newErr.statusCode).send(newErr.message);
       }
-      const otherErr = new OtherError(`Произошла ошибка: ${err.name}, ${err.message}`);
+      const otherErr = new OtherError('На сервере произошла ошибка');
       return res.status(otherErr.statusCode).send({ message: otherErr.message });
     });
 };
@@ -28,7 +28,7 @@ module.exports.deleteCard = (req, res) => {
     .catch((err) => {
       if (err.name === 'UndefinedError') return res.status(err.statusCode).send({ message: err.message });
 
-      const otherErr = new OtherError(`Произошла ошибка: ${err.name}, ${err.message}`);
+      const otherErr = new OtherError('На сервере произошла ошибка');
       return res.status(otherErr.statusCode).send({ message: otherErr.message });
     });
 };
@@ -37,7 +37,7 @@ module.exports.getCards = (req, res) => {
   Card.find({})
     .then((card) => res.send({ data: card }))
     .catch((err) => {
-      const otherErr = new OtherError(`Произошла ошибка: ${err.name}, ${err.message}`);
+      const otherErr = new OtherError('На сервере произошла ошибка');
       return res.status(otherErr.statusCode).send({ message: otherErr.message });
     });
 };
@@ -60,7 +60,7 @@ module.exports.likeCard = (req, res) => {
         return res.status(newErr.statusCode).send(newErr.message);
       }
 
-      const otherErr = new OtherError(`Произошла ошибка: ${err.name}, ${err.message}`);
+      const otherErr = new OtherError('На сервере произошла ошибка');
       return res.status(otherErr.statusCode).send({ message: otherErr.message });
     });
 };
@@ -83,7 +83,7 @@ module.exports.dislikeCard = (req, res) => {
         return res.status(newErr.statusCode).send(newErr.message);
       }
 
-      const otherErr = new OtherError(`Произошла ошибка: ${err.name}, ${err.message}`);
+      const otherErr = new OtherError('На сервере произошла ошибка');
       return res.status(otherErr.statusCode).send({ message: otherErr.message });
     });
 };
