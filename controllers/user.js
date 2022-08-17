@@ -54,8 +54,13 @@ module.exports.updateProfileInfo = (req, res) => {
       upsert: true
     }
   )
+    .orFail(() => {
+      throw new UndefinedError('Запрашиваемый пользователь не найден');
+    })
     .then(info => res.send({ data: info }))
     .catch((err) => {
+      if (err.name === "UndefinedError") return res.status(err.statusCode).send({ message: err.message })
+
       if (err.name === "ValidationError") {
         const newErr = new ValidationError('Переданы некорректные данные');
         return res.status(newErr.statusCode).send(newErr.message)
@@ -79,8 +84,13 @@ module.exports.updateProfilePhoto = (req, res) => {
       upsert: true
     }
   )
+    .orFail(() => {
+      throw new UndefinedError('Запрашиваемый пользователь не найден');
+    })
     .then(info => res.send({ data: info }))
     .catch((err) => {
+      if (err.name === "UndefinedError") return res.status(err.statusCode).send({ message: err.message })
+
       if (err.name === "ValidationError") {
         const newErr = new ValidationError('Переданы некорректные данные');
         return res.status(newErr.statusCode).send(newErr.message)
