@@ -1,4 +1,5 @@
-const Card = require('../models/card')
+const Card = require('../models/card');
+const { ValidationError, UndefinedError, OtherError } = require('../errors/Error');
 
 module.exports.createCard = (req, res) => {
   const owner = req.user._id;
@@ -6,19 +7,37 @@ module.exports.createCard = (req, res) => {
 
   Card.create({ name, link, owner })
     .then(card => res.send({ data: card }))
-    .catch(err => res.status(500).send({ message: `Произошла ошибка: ${err.message}, ${err.name}` }));
+    .catch((err) => {
+      if (err.name === "ValidationError") {
+        const newErr = new ValidationError('Переданы некорректные данные');
+        return res.status(newErr.statusCode).send(newErr.message)
+      }
+      const otherErr = new OtherError(`Произошла ошибка: ${err.name}, ${err.message}`)
+      res.status(otherErr.statusCode).send({ message: otherErr.message })
+    });
 };
 
 module.exports.deleteCard = (req, res) => {
   Card.findByIdAndRemove(req.params.cardId)
+    .orFail(() => {
+      throw new UndefinedError('Запрашиваемая карточка не найдена');
+    })
     .then(card => res.send({ data: card }))
-    .catch(err => res.status(500).send({ message: `Произошла ошибка: ${err.message}, ${err.name}` }));
+    .catch((err) => {
+      if (err.name === "UndefinedError") return res.status(err.statusCode).send({ message: err.message })
+
+      const otherErr = new OtherError(`Произошла ошибка: ${err.name}, ${err.message}`)
+      res.status(otherErr.statusCode).send({ message: otherErr.message })
+    });
 };
 
 module.exports.getCards = (req, res) => {
   Card.find({})
     .then(card => res.send({ data: card }))
-    .catch(err => res.status(500).send({ message: `Произошла ошибка: ${err.message}, ${err.name}` }));
+    .catch((err) => {
+      const otherErr = new OtherError(`Произошла ошибка: ${err.name}, ${err.message}`)
+      res.status(otherErr.statusCode).send({ message: otherErr.message })
+    });
 };
 
 module.exports.likeCard = (req, res) => {
@@ -26,8 +45,16 @@ module.exports.likeCard = (req, res) => {
     { $addToSet: { likes: req.user._id } },
     { new: true },
   )
+    .orFail(() => {
+      throw new UndefinedError('Запрашиваемая карточка не найдена');
+    })
     .then(card => res.send({ data: card }))
-    .catch(err => res.status(500).send({ message: `Произошла ошибка: ${err.message}, ${err.name}` }));
+    .catch((err) => {
+      if (err.name === "UndefinedError") return res.status(err.statusCode).send({ message: err.message })
+
+      const otherErr = new OtherError(`Произошла ошибка: ${err.name}, ${err.message}`)
+      res.status(otherErr.statusCode).send({ message: otherErr.message })
+    });
 };
 
 module.exports.dislikeCard = (req, res) => {
@@ -35,6 +62,14 @@ module.exports.dislikeCard = (req, res) => {
     { $pull: { likes: req.user._id } },
     { new: true },
   )
+    .orFail(() => {
+      throw new UndefinedError('Запрашиваемая карточка не найдена');
+    })
     .then(card => res.send({ data: card }))
-    .catch(err => res.status(500).send({ message: `Произошла ошибка: ${err.message}, ${err.name}` }));
+    .catch((err) => {
+      if (err.name === "UndefinedError") return res.status(err.statusCode).send({ message: err.message })
+
+      const otherErr = new OtherError(`Произошла ошибка: ${err.name}, ${err.message}`)
+      res.status(otherErr.statusCode).send({ message: otherErr.message })
+    });
 };
