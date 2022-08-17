@@ -5,5 +5,5 @@ const otherErrorCode = 500;
 module.exports = {
   UndefinedErrorCode,
   ValidationErrorCode,
-  otherErrorCode
-}
+  otherErrorCode,
+};
