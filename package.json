@@ -1,7 +1,7 @@
 {
   "name": "backend-mesto",
   "version": "1.0.0",
-  "description": "",
+  "description": "[![Tests for sprint 13](https://github.com/N-Daria/express-mesto-gha/actions/workflows/tests-13-sprint.yml/badge.svg)](https://github.com/N-Daria/express-mesto-gha/actions/workflows/tests-13-sprint.yml) [![Tests for sprint 14](https: //github.com/N-Daria/express-mesto-gha/actions/workflows/tests-14-sprint.yml/badge.svg)](https://github.com/N-Daria/express-mesto-gha/actions/workflows/tests-14-sprint.yml)",
   "main": "index.js",
   "scripts": {
     "lint": "npx eslint .",
