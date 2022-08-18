@@ -13,8 +13,8 @@ userRouters.get('/users/:userId', getUser);
 
 userRouters.get('/users', getUsers);
 
-userRouters.patch('/me/avatar', updateProfilePhoto);
+userRouters.patch('/users/me/avatar', updateProfilePhoto);
 
-userRouters.patch('/me', updateProfileInfo);
+userRouters.patch('/users/me', updateProfileInfo);
 
 module.exports = { userRouters };

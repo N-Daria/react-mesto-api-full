@@ -7,11 +7,15 @@ module.exports.createUser = (req, res) => {
   const { name, about, avatar } = req.body;
 
   User.create({ name, about, avatar })
-    .then((user) => res.send({ data: user }))
+    .then((user) => {
+      // JSON.stringify(user);
+      // console.log(user)
+      res.send({ data: user });
+    })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         const newErr = new ValidationError('Переданы некорректные данные');
-        return res.status(newErr.statusCode).send(newErr.message);
+        return res.status(newErr.statusCode).send({ message: newErr.message });
       }
       const otherErr = new OtherError('На сервере произошла ошибка');
       return res.status(otherErr.statusCode).send({ message: otherErr.message });
@@ -65,7 +69,7 @@ module.exports.updateProfileInfo = (req, res) => {
 
       if (err.name === 'ValidationError') {
         const newErr = new ValidationError('Переданы некорректные данные');
-        return res.status(newErr.statusCode).send(newErr.message);
+        return res.status(newErr.statusCode).send({ message: newErr.message });
       }
       const otherErr = new OtherError('На сервере произошла ошибка');
       return res.status(otherErr.statusCode).send({ message: otherErr.message });
@@ -95,7 +99,7 @@ module.exports.updateProfilePhoto = (req, res) => {
 
       if (err.name === 'ValidationError') {
         const newErr = new ValidationError('Переданы некорректные данные');
-        return res.status(newErr.statusCode).send(newErr.message);
+        return res.status(newErr.statusCode).send({ message: newErr.message });
       }
       const otherErr = new OtherError('На сервере произошла ошибка');
       return res.status(otherErr.statusCode).send({ message: otherErr.message });
