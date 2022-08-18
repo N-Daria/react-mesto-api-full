@@ -36,7 +36,7 @@ module.exports.deleteCard = (req, res) => {
 module.exports.getCards = (req, res) => {
   Card.find({})
     .then((card) => res.send({ data: card }))
-    .catch((err) => {
+    .catch(() => {
       const otherErr = new OtherError('На сервере произошла ошибка');
       return res.status(otherErr.statusCode).send({ message: otherErr.message });
     });
