@@ -12,7 +12,7 @@ module.exports.createCard = (req, res) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         const newErr = new ValidationError('Переданы некорректные данные');
-        return res.status(newErr.statusCode).send(newErr.message);
+        return res.status(newErr.statusCode).send({ message: newErr.message });
       }
       const otherErr = new OtherError('На сервере произошла ошибка');
       return res.status(otherErr.statusCode).send({ message: otherErr.message });
@@ -57,7 +57,7 @@ module.exports.likeCard = (req, res) => {
 
       if (err.name === 'ValidationError') {
         const newErr = new ValidationError('Переданы некорректные данные');
-        return res.status(newErr.statusCode).send(newErr.message);
+        return res.status(newErr.statusCode).send({ message: newErr.message });
       }
 
       const otherErr = new OtherError('На сервере произошла ошибка');
@@ -80,7 +80,7 @@ module.exports.dislikeCard = (req, res) => {
 
       if (err.name === 'ValidationError') {
         const newErr = new ValidationError('Переданы некорректные данные');
-        return res.status(newErr.statusCode).send(newErr.message);
+        return res.status(newErr.statusCode).send({ message: newErr.message });
       }
 
       const otherErr = new OtherError('На сервере произошла ошибка');
