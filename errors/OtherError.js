@@ -1,4 +1,4 @@
-const { otherErrorCode } = require('./errorStatus');
+const { otherErrorCode } = require('./responseStatuses');
 
 module.exports.OtherError = class OtherError extends Error {
   constructor(message) {

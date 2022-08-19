@@ -2,15 +2,14 @@ const User = require('../models/user');
 const { OtherError } = require('../errors/OtherError');
 const { UndefinedError } = require('../errors/UndefinedError');
 const { ValidationError } = require('../errors/ValidationError');
+const { createdSucces } = require('../errors/responseStatuses');
 
 module.exports.createUser = (req, res) => {
   const { name, about, avatar } = req.body;
 
   User.create({ name, about, avatar })
     .then((user) => {
-      // JSON.stringify(user);
-      // console.log(user)
-      res.send({ data: user });
+      res.status(createdSucces).send({ data: user });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -31,6 +30,11 @@ module.exports.getUser = (req, res) => {
     .catch((err) => {
       if (err.name === 'UndefinedError') return res.status(err.statusCode).send({ message: err.message });
 
+      if (err.name === 'CastError') {
+        const newErr = new ValidationError('Переданы некорректные данные');
+        return res.status(newErr.statusCode).send({ message: newErr.message });
+      }
+
       const otherErr = new OtherError('На сервере произошла ошибка');
       return res.status(otherErr.statusCode).send({ message: otherErr.message });
     });
@@ -38,7 +42,7 @@ module.exports.getUser = (req, res) => {
 
 module.exports.getUsers = (req, res) => {
   User.find({})
-    .then((user) => res.send({ data: user }))
+    .then((users) => res.send({ data: users }))
     .catch(() => {
       const otherErr = new OtherError('На сервере произошла ошибка');
       return res.status(otherErr.statusCode).send({ message: otherErr.message });
@@ -57,20 +61,20 @@ module.exports.updateProfileInfo = (req, res) => {
     {
       new: true,
       runValidators: true,
-      upsert: true,
     },
   )
     .orFail(() => {
       throw new UndefinedError('Запрашиваемый пользователь не найден');
     })
-    .then((info) => res.send({ data: info }))
+    .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === 'UndefinedError') return res.status(err.statusCode).send({ message: err.message });
 
-      if (err.name === 'ValidationError') {
+      if (err.name === 'ValidationError' || err.name === 'CastError') {
         const newErr = new ValidationError('Переданы некорректные данные');
         return res.status(newErr.statusCode).send({ message: newErr.message });
       }
+
       const otherErr = new OtherError('На сервере произошла ошибка');
       return res.status(otherErr.statusCode).send({ message: otherErr.message });
     });
@@ -87,17 +91,16 @@ module.exports.updateProfilePhoto = (req, res) => {
     {
       new: true,
       runValidators: true,
-      upsert: true,
     },
   )
     .orFail(() => {
       throw new UndefinedError('Запрашиваемый пользователь не найден');
     })
-    .then((info) => res.send({ data: info }))
+    .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === 'UndefinedError') return res.status(err.statusCode).send({ message: err.message });
 
-      if (err.name === 'ValidationError') {
+      if (err.name === 'ValidationError' || err.name === 'CastError') {
         const newErr = new ValidationError('Переданы некорректные данные');
         return res.status(newErr.statusCode).send({ message: newErr.message });
       }
