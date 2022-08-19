@@ -28,7 +28,12 @@ module.exports.getUser = (req, res) => {
     })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      if (err.name === 'UndefinedError' || err.name === 'CastError') return res.status(err.statusCode).send({ message: err.message });
+      if (err.name === 'UndefinedError') return res.status(err.statusCode).send({ message: err.message });
+
+      if (err.name === 'CastError') {
+        const newErr = new UndefinedError('Запрашиваемый пользователь не найден');
+        return res.status(newErr.statusCode).send({ message: newErr.message });
+      }
 
       const otherErr = new OtherError('На сервере произошла ошибка');
       return res.status(otherErr.statusCode).send({ message: otherErr.message });
