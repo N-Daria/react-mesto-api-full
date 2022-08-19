@@ -31,7 +31,7 @@ module.exports.getUser = (req, res) => {
       if (err.name === 'UndefinedError') return res.status(err.statusCode).send({ message: err.message });
 
       if (err.name === 'CastError') {
-        const newErr = new UndefinedError('Запрашиваемый пользователь не найден');
+        const newErr = new ValidationError('Переданы некорректные данные');
         return res.status(newErr.statusCode).send({ message: newErr.message });
       }
 
@@ -68,9 +68,9 @@ module.exports.updateProfileInfo = (req, res) => {
     })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      if (err.name === 'UndefinedError' || err.name === 'CastError') return res.status(err.statusCode).send({ message: err.message });
+      if (err.name === 'UndefinedError') return res.status(err.statusCode).send({ message: err.message });
 
-      if (err.name === 'ValidationError') {
+      if (err.name === 'ValidationError' || err.name === 'CastError') {
         const newErr = new ValidationError('Переданы некорректные данные');
         return res.status(newErr.statusCode).send({ message: newErr.message });
       }
@@ -98,12 +98,13 @@ module.exports.updateProfilePhoto = (req, res) => {
     })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      if (err.name === 'UndefinedError' || err.name === 'CastError') return res.status(err.statusCode).send({ message: err.message });
+      if (err.name === 'UndefinedError') return res.status(err.statusCode).send({ message: err.message });
 
-      if (err.name === 'ValidationError') {
+      if (err.name === 'ValidationError' || err.name === 'CastError') {
         const newErr = new ValidationError('Переданы некорректные данные');
         return res.status(newErr.statusCode).send({ message: newErr.message });
       }
+
       const otherErr = new OtherError('На сервере произошла ошибка');
       return res.status(otherErr.statusCode).send({ message: otherErr.message });
     });
