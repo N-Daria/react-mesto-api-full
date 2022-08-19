@@ -2,6 +2,7 @@ const Card = require('../models/card');
 const { OtherError } = require('../errors/OtherError');
 const { UndefinedError } = require('../errors/UndefinedError');
 const { ValidationError } = require('../errors/ValidationError');
+const { IncorrectDataError } = require('../errors/IncorrectDataError');
 const { createdSuccesCode } = require('../errors/responseStatuses');
 
 module.exports.createCard = (req, res) => {
@@ -27,7 +28,12 @@ module.exports.deleteCard = (req, res) => {
     })
     .then((card) => res.send({ data: card }))
     .catch((err) => {
-      if (err.name === 'UndefinedError' || err.name === 'CastError') return res.status(err.statusCode).send({ message: err.message });
+      if (err.name === 'UndefinedError') return res.status(err.statusCode).send({ message: err.message });
+
+      if (err.name === 'CastError') {
+        const newErr = new IncorrectDataError('Передан некорректный id');
+        return res.status(newErr.statusCode).send({ message: newErr.message });
+      }
 
       const otherErr = new OtherError('На сервере произошла ошибка');
       return res.status(otherErr.statusCode).send({ message: otherErr.message });
@@ -54,7 +60,12 @@ module.exports.likeCard = (req, res) => {
     })
     .then((card) => res.send({ data: card }))
     .catch((err) => {
-      if (err.name === 'UndefinedError' || err.name === 'CastError') return res.status(err.statusCode).send({ message: err.message });
+      if (err.name === 'UndefinedError') return res.status(err.statusCode).send({ message: err.message });
+
+      if (err.name === 'CastError') {
+        const newErr = new IncorrectDataError('Передан некорректный id');
+        return res.status(newErr.statusCode).send({ message: newErr.message });
+      }
 
       const otherErr = new OtherError('На сервере произошла ошибка');
       return res.status(otherErr.statusCode).send({ message: otherErr.message });
@@ -72,7 +83,12 @@ module.exports.dislikeCard = (req, res) => {
     })
     .then((card) => res.send({ data: card }))
     .catch((err) => {
-      if (err.name === 'UndefinedError' || err.name === 'CastError') return res.status(err.statusCode).send({ message: err.message });
+      if (err.name === 'UndefinedError') return res.status(err.statusCode).send({ message: err.message });
+
+      if (err.name === 'CastError') {
+        const newErr = new IncorrectDataError('Передан некорректный id');
+        return res.status(newErr.statusCode).send({ message: newErr.message });
+      }
 
       const otherErr = new OtherError('На сервере произошла ошибка');
       return res.status(otherErr.statusCode).send({ message: otherErr.message });

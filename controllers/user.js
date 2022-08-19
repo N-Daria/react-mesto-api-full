@@ -2,6 +2,7 @@ const User = require('../models/user');
 const { OtherError } = require('../errors/OtherError');
 const { UndefinedError } = require('../errors/UndefinedError');
 const { ValidationError } = require('../errors/ValidationError');
+const { IncorrectDataError } = require('../errors/IncorrectDataError');
 const { createdSuccesCode } = require('../errors/responseStatuses');
 
 module.exports.createUser = (req, res) => {
@@ -31,7 +32,7 @@ module.exports.getUser = (req, res) => {
       if (err.name === 'UndefinedError') return res.status(err.statusCode).send({ message: err.message });
 
       if (err.name === 'CastError') {
-        const newErr = new ValidationError('Переданы некорректные данные');
+        const newErr = new IncorrectDataError('Передан некорректный id');
         return res.status(newErr.statusCode).send({ message: newErr.message });
       }
 
@@ -70,8 +71,13 @@ module.exports.updateProfileInfo = (req, res) => {
     .catch((err) => {
       if (err.name === 'UndefinedError') return res.status(err.statusCode).send({ message: err.message });
 
-      if (err.name === 'ValidationError' || err.name === 'CastError') {
+      if (err.name === 'ValidationError') {
         const newErr = new ValidationError('Переданы некорректные данные');
+        return res.status(newErr.statusCode).send({ message: newErr.message });
+      }
+
+      if (err.name === 'CastError') {
+        const newErr = new IncorrectDataError('Передан некорректный id');
         return res.status(newErr.statusCode).send({ message: newErr.message });
       }
 
@@ -100,8 +106,13 @@ module.exports.updateProfilePhoto = (req, res) => {
     .catch((err) => {
       if (err.name === 'UndefinedError') return res.status(err.statusCode).send({ message: err.message });
 
-      if (err.name === 'ValidationError' || err.name === 'CastError') {
+      if (err.name === 'ValidationError') {
         const newErr = new ValidationError('Переданы некорректные данные');
+        return res.status(newErr.statusCode).send({ message: newErr.message });
+      }
+
+      if (err.name === 'CastError') {
+        const newErr = new IncorrectDataError('Передан некорректный id');
         return res.status(newErr.statusCode).send({ message: newErr.message });
       }
 
