@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const { userRouters } = require('./routes/user');
 const { cardRouters } = require('./routes/card');
+const { undefinedPage } = require('./controllers/undefinedPage');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -24,7 +25,8 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(userRouters);
-app.use(cardRouters);
+app.use('/users', userRouters);
+app.use('/cards', cardRouters);
+app.use('*', undefinedPage);
 
 startServer();
