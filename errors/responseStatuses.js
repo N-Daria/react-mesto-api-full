@@ -1,12 +1,14 @@
-const UndefinedErrorCode = 404;
-const ValidationErrorCode = 400;
+const undefinedErrorCode = 404;
+const validationErrorCode = 400;
+const authentificationErrorCode = 401;
 const otherErrorCode = 500;
 
 const createdSuccesCode = 201;
 
 module.exports = {
-  UndefinedErrorCode,
-  ValidationErrorCode,
+  undefinedErrorCode,
+  validationErrorCode,
   otherErrorCode,
   createdSuccesCode,
+  authentificationErrorCode,
 };
