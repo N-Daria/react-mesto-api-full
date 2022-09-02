@@ -1,5 +1,7 @@
 const express = require('express');
+require('dotenv').config();
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
 const { userRouters } = require('./routes/user');
 const { cardRouters } = require('./routes/card');
 const { undefinedPage } = require('./controllers/undefinedPage');
@@ -27,6 +29,8 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(cookieParser());
+
 app.use('/users', userRouters);
 app.use('/cards', cardRouters);
 app.post('/signin', login);
@@ -36,3 +40,15 @@ app.use(authorization);
 app.use('*', undefinedPage);
 
 startServer();
+
+// app.use((err, req, res, next) => {
+//   const { statusCode = 500, message } = err;
+
+//   res
+//     .status(statusCode)
+//     .send({
+//       message: statusCode === 500
+//         ? 'На сервере произошла ошибка'
+//         : message
+//     });
+// });

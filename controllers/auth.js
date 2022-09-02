@@ -5,16 +5,26 @@ const User = require('../models/user');
 const { createdSuccesCode } = require('../errors/responseStatuses');
 const { ValidationError } = require('../errors/ValidationError');
 
+const { NODE_ENV, JWT_SECRET } = process.env;
+
 module.exports.login = (req, res) => {
   const { email, password } = req.body;
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, 'hellohello', { expiresIn: '7d' });
+      const token = jwt.sign(
+        { _id: user._id },
+        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+        { expiresIn: '7d' },
+      );
 
       // stores jwt in http. If doesn't work, remove
-      res.cookie('token', token, { httpOnly: true });
-      res.send({ token });
+      res.cookie('token', token, {
+        httpOnly: true,
+        sameSite: true,
+      })
+        .end();
+      // res.send({ token });
     })
     .catch((err) => {
       if (err.name === 'AuthentificationError') return res.status(err.statusCode).send({ message: err.message });
