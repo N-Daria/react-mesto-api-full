@@ -4,18 +4,17 @@ const { AuthentificationError } = require('../errors/AuthentificationError');
 const { JWT_SECRET } = process.env;
 
 module.exports.authorization = (req, res, next) => {
-  const { authorization } = req.headers;
+  const { authorization } = req.cookies;
 
-  if (!authorization || !authorization.startsWith('Bearer ')) {
+  if (!authorization) {
     const err = new AuthentificationError('Необходима авторизация');
     return res.status(err.statusCode).send({ message: err.message });
   }
 
-  const token = authorization.replace('Bearer ', '');
   let payload;
 
   try {
-    payload = jwt.verify(token, JWT_SECRET);
+    payload = jwt.verify(authorization, JWT_SECRET);
   } catch (error) {
     const err = new AuthentificationError('Необходима авторизация');
     return res.status(err.statusCode).send({ message: err.message });

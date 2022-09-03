@@ -18,13 +18,12 @@ module.exports.login = (req, res) => {
         { expiresIn: '7d' },
       );
 
-      // stores jwt in http. If doesn't work, remove
       res.cookie('token', token, {
         httpOnly: true,
         sameSite: true,
-      })
-        .end();
-      // res.send({ token });
+        maxAge: 3600000 * 24 * 7,
+      });
+      res.send({ _id: user._id });
     })
     .catch((err) => {
       if (err.name === 'AuthentificationError') return res.status(err.statusCode).send({ message: err.message });
