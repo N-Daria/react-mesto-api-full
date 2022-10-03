@@ -4,7 +4,7 @@ const { AuthentificationError } = require('../errors/AuthentificationError');
 const { JWT_SECRET } = process.env;
 
 module.exports.authorization = (req, res, next) => {
-  const { authorization } = req.cookies;
+  const authorization = req.cookies.token;
 
   if (!authorization) {
     const err = new AuthentificationError('Необходима авторизация');
