@@ -23,10 +23,9 @@ module.exports.createCard = (req, res) => {
 
 module.exports.deleteCard = (req, res) => {
   Card.findByIdAndRemove(req.params.cardId)
-    .orFail(() => {
-      throw new UndefinedError('Запрашиваемая карточка не найдена');
+    .then((card) => {
+      res.send({ data: card });
     })
-    .then((card) => res.send({ data: card }))
     .catch((err) => {
       if (err.name === 'UndefinedError') return res.status(err.statusCode).send({ message: err.message });
 

@@ -2,7 +2,6 @@ const express = require('express');
 require('dotenv').config();
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
-// const bodyParcer = require('body-parser');
 const path = require('path');
 const { userRouters } = require('./routes/user');
 const { cardRouters } = require('./routes/card');
@@ -23,19 +22,11 @@ async function startServer() {
 
 app.use(express.json());
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '62f39dfeaedf19d711093bc2',
-  };
-
-  next();
-});
-
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/users', authorization, userRouters);
-app.use('/cards', cardRouters);
+app.use('/cards', authorization, cardRouters);
 app.post('/signin', login);
 app.post('/signup', createUser);
 

@@ -6,10 +6,11 @@ const {
   likeCard,
   dislikeCard,
 } = require('../controllers/card');
+const { checkIfICanDeleteCard } = require('../middlewares/checkIfICanDeleteCard');
 
 cardRouters.post('/', createCard);
 
-cardRouters.delete('/:cardId', deleteCard);
+cardRouters.delete('/:cardId', checkIfICanDeleteCard, deleteCard);
 
 cardRouters.get('/', getCards);
 
