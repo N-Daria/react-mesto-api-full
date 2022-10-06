@@ -1,7 +1,6 @@
 const { AuthentificationError } = require('../errors/AuthentificationError');
-const Card = require('../models/card');
-const { OtherError } = require('../errors/OtherError');
 const { UndefinedError } = require('../errors/UndefinedError');
+const Card = require('../models/card');
 
 module.exports.checkIfICanDeleteCard = (req, res, next) => {
   Card.findById(req.params.cardId)
@@ -16,12 +15,5 @@ module.exports.checkIfICanDeleteCard = (req, res, next) => {
 
       throw new AuthentificationError('Недостаточно прав для удаления чужой карточки');
     })
-    .catch((err) => {
-      if (err.name === 'UndefinedError') return res.status(err.statusCode).send({ message: err.message });
-
-      if (err.name === 'AuthentificationError') return res.status(err.statusCode).send({ message: err.message });
-
-      const otherErr = new OtherError('На сервере произошла ошибка');
-      return res.status(otherErr.statusCode).send({ message: otherErr.message });
-    });
+    .catch(next);
 };

@@ -1,11 +1,10 @@
 const Card = require('../models/card');
-const { OtherError } = require('../errors/OtherError');
 const { UndefinedError } = require('../errors/UndefinedError');
 const { ValidationError } = require('../errors/ValidationError');
 const { IncorrectDataError } = require('../errors/IncorrectDataError');
 const { createdSuccesCode } = require('../errors/responseStatuses');
 
-module.exports.createCard = (req, res) => {
+module.exports.createCard = (req, res, next) => {
   const owner = req.user._id;
   const { name, link } = req.body;
 
@@ -14,41 +13,35 @@ module.exports.createCard = (req, res) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         const newErr = new ValidationError('Переданы некорректные данные');
-        return res.status(newErr.statusCode).send({ message: newErr.message });
+        next(newErr);
       }
-      const otherErr = new OtherError('На сервере произошла ошибка');
-      return res.status(otherErr.statusCode).send({ message: otherErr.message });
+
+      next(err);
     });
 };
 
-module.exports.deleteCard = (req, res) => {
+module.exports.deleteCard = (req, res, next) => {
   Card.findByIdAndRemove(req.params.cardId)
     .then((card) => {
       res.send({ data: card });
     })
     .catch((err) => {
-      if (err.name === 'UndefinedError') return res.status(err.statusCode).send({ message: err.message });
-
       if (err.name === 'CastError') {
         const newErr = new IncorrectDataError('Передан некорректный id');
-        return res.status(newErr.statusCode).send({ message: newErr.message });
+        next(newErr);
       }
 
-      const otherErr = new OtherError('На сервере произошла ошибка');
-      return res.status(otherErr.statusCode).send({ message: otherErr.message });
+      next(err);
     });
 };
 
-module.exports.getCards = (req, res) => {
+module.exports.getCards = (req, res, next) => {
   Card.find({})
     .then((cards) => res.send({ data: cards }))
-    .catch(() => {
-      const otherErr = new OtherError('На сервере произошла ошибка');
-      return res.status(otherErr.statusCode).send({ message: otherErr.message });
-    });
+    .catch(next);
 };
 
-module.exports.likeCard = (req, res) => {
+module.exports.likeCard = (req, res, next) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $addToSet: { likes: req.user._id } },
@@ -59,19 +52,16 @@ module.exports.likeCard = (req, res) => {
     })
     .then((card) => res.send({ data: card }))
     .catch((err) => {
-      if (err.name === 'UndefinedError') return res.status(err.statusCode).send({ message: err.message });
-
       if (err.name === 'CastError') {
         const newErr = new IncorrectDataError('Передан некорректный id');
-        return res.status(newErr.statusCode).send({ message: newErr.message });
+        next(newErr);
       }
 
-      const otherErr = new OtherError('На сервере произошла ошибка');
-      return res.status(otherErr.statusCode).send({ message: otherErr.message });
+      next(err);
     });
 };
 
-module.exports.dislikeCard = (req, res) => {
+module.exports.dislikeCard = (req, res, next) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id } },
@@ -82,14 +72,11 @@ module.exports.dislikeCard = (req, res) => {
     })
     .then((card) => res.send({ data: card }))
     .catch((err) => {
-      if (err.name === 'UndefinedError') return res.status(err.statusCode).send({ message: err.message });
-
       if (err.name === 'CastError') {
         const newErr = new IncorrectDataError('Передан некорректный id');
-        return res.status(newErr.statusCode).send({ message: newErr.message });
+        next(newErr);
       }
 
-      const otherErr = new OtherError('На сервере произошла ошибка');
-      return res.status(otherErr.statusCode).send({ message: otherErr.message });
+      next(err);
     });
 };

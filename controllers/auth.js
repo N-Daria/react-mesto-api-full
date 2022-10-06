@@ -1,13 +1,12 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const { OtherError } = require('../errors/OtherError');
 const User = require('../models/user');
 const { createdSuccesCode } = require('../errors/responseStatuses');
 const { ValidationError } = require('../errors/ValidationError');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
-module.exports.login = (req, res) => {
+module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
 
   return User.findUserByCredentials(email, password)
@@ -25,15 +24,10 @@ module.exports.login = (req, res) => {
       });
       res.send({ _id: user._id });
     })
-    .catch((err) => {
-      if (err.name === 'AuthentificationError') return res.status(err.statusCode).send({ message: err.message });
-
-      const otherErr = new OtherError('На сервере произошла ошибка');
-      return res.status(otherErr.statusCode).send({ message: otherErr.message });
-    });
+    .catch(next);
 };
 
-module.exports.createUser = (req, res) => {
+module.exports.createUser = (req, res, next) => {
   const {
     name,
     about,
@@ -55,9 +49,8 @@ module.exports.createUser = (req, res) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         const newErr = new ValidationError('Переданы некорректные данные');
-        return res.status(newErr.statusCode).send({ message: newErr.message });
+        next(newErr);
       }
-      const otherErr = new OtherError('На сервере произошла ошибка');
-      return res.status(otherErr.statusCode).send({ message: otherErr.message });
+      next(err);
     });
 };

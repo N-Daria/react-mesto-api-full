@@ -8,6 +8,7 @@ const { cardRouters } = require('./routes/card');
 const { undefinedPage } = require('./controllers/undefinedPage');
 const { login, createUser } = require('./controllers/auth');
 const { authorization } = require('./middlewares/authorization');
+const { errorHandling } = require('./middlewares/errorHandling');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -31,5 +32,7 @@ app.post('/signin', login);
 app.post('/signup', createUser);
 
 app.use('*', undefinedPage);
+
+app.use(errorHandling);
 
 startServer();

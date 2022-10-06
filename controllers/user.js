@@ -1,38 +1,31 @@
 const User = require('../models/user');
-const { OtherError } = require('../errors/OtherError');
 const { UndefinedError } = require('../errors/UndefinedError');
 const { ValidationError } = require('../errors/ValidationError');
 const { IncorrectDataError } = require('../errors/IncorrectDataError');
 
-module.exports.getUser = (req, res) => {
+module.exports.getUser = (req, res, next) => {
   User.findById(req.params.userId)
     .orFail(() => {
       throw new UndefinedError('Запрашиваемый пользователь не найден');
     })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      if (err.name === 'UndefinedError') return res.status(err.statusCode).send({ message: err.message });
-
       if (err.name === 'CastError') {
         const newErr = new IncorrectDataError('Передан некорректный id');
-        return res.status(newErr.statusCode).send({ message: newErr.message });
+        next(newErr);
       }
 
-      const otherErr = new OtherError('На сервере произошла ошибка');
-      return res.status(otherErr.statusCode).send({ message: otherErr.message });
+      next(err);
     });
 };
 
-module.exports.getUsers = (req, res) => {
+module.exports.getUsers = (req, res, next) => {
   User.find({})
     .then((users) => res.send({ data: users }))
-    .catch(() => {
-      const otherErr = new OtherError('На сервере произошла ошибка');
-      return res.status(otherErr.statusCode).send({ message: otherErr.message });
-    });
+    .catch(next);
 };
 
-module.exports.updateProfileInfo = (req, res) => {
+module.exports.updateProfileInfo = (req, res, next) => {
   const userID = req.user._id;
 
   User.findByIdAndUpdate(
@@ -51,24 +44,19 @@ module.exports.updateProfileInfo = (req, res) => {
     })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      if (err.name === 'UndefinedError') return res.status(err.statusCode).send({ message: err.message });
-
       if (err.name === 'ValidationError') {
         const newErr = new ValidationError('Переданы некорректные данные');
-        return res.status(newErr.statusCode).send({ message: newErr.message });
-      }
-
-      if (err.name === 'CastError') {
+        next(newErr);
+      } else if (err.name === 'CastError') {
         const newErr = new IncorrectDataError('Передан некорректный id');
-        return res.status(newErr.statusCode).send({ message: newErr.message });
+        next(newErr);
       }
 
-      const otherErr = new OtherError('На сервере произошла ошибка');
-      return res.status(otherErr.statusCode).send({ message: otherErr.message });
+      next(err);
     });
 };
 
-module.exports.updateProfilePhoto = (req, res) => {
+module.exports.updateProfilePhoto = (req, res, next) => {
   const userID = req.user._id;
 
   User.findByIdAndUpdate(
@@ -86,35 +74,27 @@ module.exports.updateProfilePhoto = (req, res) => {
     })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      if (err.name === 'UndefinedError') return res.status(err.statusCode).send({ message: err.message });
-
       if (err.name === 'ValidationError') {
         const newErr = new ValidationError('Переданы некорректные данные');
-        return res.status(newErr.statusCode).send({ message: newErr.message });
-      }
-
-      if (err.name === 'CastError') {
+        next(newErr);
+      } else if (err.name === 'CastError') {
         const newErr = new IncorrectDataError('Передан некорректный id');
-        return res.status(newErr.statusCode).send({ message: newErr.message });
+        next(newErr);
       }
 
-      const otherErr = new OtherError('На сервере произошла ошибка');
-      return res.status(otherErr.statusCode).send({ message: otherErr.message });
+      next(err);
     });
 };
 
-module.exports.getUserInfo = (req, res) => {
+module.exports.getUserInfo = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      if (err.name === 'UndefinedError') { return res.status(err.statusCode).send({ message: err.message }); }
-
       if (err.name === 'CastError') {
         const newErr = new IncorrectDataError('Передан некорректный id');
-        return res.status(newErr.statusCode).send({ message: newErr.message });
+        next(newErr);
       }
 
-      const otherErr = new OtherError('На сервере произошла ошибка');
-      return res.status(otherErr.statusCode).send({ message: otherErr.message });
+      next(err);
     });
 };
