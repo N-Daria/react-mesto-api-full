@@ -1,3 +1,4 @@
+const { celebrate, Joi } = require('celebrate');
 const cardRouters = require('express').Router();
 const {
   createCard,
@@ -8,7 +9,12 @@ const {
 } = require('../controllers/card');
 const { checkIfICanDeleteCard } = require('../middlewares/checkIfICanDeleteCard');
 
-cardRouters.post('/', createCard);
+cardRouters.post('/', celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().required().min(2).max(30),
+    link: Joi.string().required(),
+  }).unknown(true),
+}), createCard);
 
 cardRouters.delete('/:cardId', checkIfICanDeleteCard, deleteCard);
 
