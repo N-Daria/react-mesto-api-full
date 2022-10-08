@@ -23,7 +23,7 @@ module.exports.createCard = (req, res, next) => {
 module.exports.deleteCard = (req, res, next) => {
   Card.findByIdAndRemove(req.params.cardId)
     .then((card) => {
-      res.send({ data: card });
+      res.status(createdSuccesCode).send({ data: card });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
@@ -37,7 +37,7 @@ module.exports.deleteCard = (req, res, next) => {
 
 module.exports.getCards = (req, res, next) => {
   Card.find({})
-    .then((cards) => res.send({ data: cards }))
+    .then((cards) => res.status(createdSuccesCode).send({ data: cards }))
     .catch(next);
 };
 
@@ -50,7 +50,7 @@ module.exports.likeCard = (req, res, next) => {
     .orFail(() => {
       throw new UndefinedError('Запрашиваемая карточка не найдена');
     })
-    .then((card) => res.send({ data: card }))
+    .then((card) => res.status(createdSuccesCode).send({ data: card }))
     .catch((err) => {
       if (err.name === 'CastError') {
         const newErr = new IncorrectDataError('Передан некорректный id');
@@ -70,7 +70,7 @@ module.exports.dislikeCard = (req, res, next) => {
     .orFail(() => {
       throw new UndefinedError('Запрашиваемая карточка не найдена');
     })
-    .then((card) => res.send({ data: card }))
+    .then((card) => res.status(createdSuccesCode).send({ data: card }))
     .catch((err) => {
       if (err.name === 'CastError') {
         const newErr = new IncorrectDataError('Передан некорректный id');
