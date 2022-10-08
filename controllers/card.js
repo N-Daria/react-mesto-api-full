@@ -1,8 +1,7 @@
 const Card = require('../models/card');
 const { UndefinedError } = require('../errors/UndefinedError');
 const { ValidationError } = require('../errors/ValidationError');
-const { IncorrectDataError } = require('../errors/IncorrectDataError');
-const { createdSuccesCode } = require('../errors/responseStatuses');
+const { createdSuccesCode, succesCode } = require('../errors/responseStatuses');
 
 module.exports.createCard = (req, res, next) => {
   const owner = req.user._id;
@@ -23,11 +22,11 @@ module.exports.createCard = (req, res, next) => {
 module.exports.deleteCard = (req, res, next) => {
   Card.findByIdAndRemove(req.params.cardId)
     .then((card) => {
-      res.status(createdSuccesCode).send({ data: card });
+      res.status(succesCode).send({ data: card });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        const newErr = new IncorrectDataError('Передан некорректный id');
+        const newErr = new ValidationError('Передан некорректный id');
         next(newErr);
       }
 
@@ -37,7 +36,7 @@ module.exports.deleteCard = (req, res, next) => {
 
 module.exports.getCards = (req, res, next) => {
   Card.find({})
-    .then((cards) => res.status(createdSuccesCode).send({ data: cards }))
+    .then((cards) => res.status(succesCode).send({ data: cards }))
     .catch(next);
 };
 
@@ -53,7 +52,7 @@ module.exports.likeCard = (req, res, next) => {
     .then((card) => res.status(createdSuccesCode).send({ data: card }))
     .catch((err) => {
       if (err.name === 'CastError') {
-        const newErr = new IncorrectDataError('Передан некорректный id');
+        const newErr = new ValidationError('Передан некорректный id');
         next(newErr);
       }
 
@@ -70,10 +69,10 @@ module.exports.dislikeCard = (req, res, next) => {
     .orFail(() => {
       throw new UndefinedError('Запрашиваемая карточка не найдена');
     })
-    .then((card) => res.status(createdSuccesCode).send({ data: card }))
+    .then((card) => res.status(succesCode).send({ data: card }))
     .catch((err) => {
       if (err.name === 'CastError') {
-        const newErr = new IncorrectDataError('Передан некорректный id');
+        const newErr = new ValidationError('Передан некорректный id');
         next(newErr);
       }
 

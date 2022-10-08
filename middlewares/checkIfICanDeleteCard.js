@@ -1,5 +1,5 @@
-const { AuthentificationError } = require('../errors/AuthentificationError');
 const { UndefinedError } = require('../errors/UndefinedError');
+const { OtherUserInfoError } = require('../errors/OtherUserInfoError');
 const Card = require('../models/card');
 
 module.exports.checkIfICanDeleteCard = (req, res, next) => {
@@ -13,7 +13,7 @@ module.exports.checkIfICanDeleteCard = (req, res, next) => {
         return next();
       }
 
-      throw new AuthentificationError('Недостаточно прав для удаления чужой карточки');
+      throw new OtherUserInfoError('Недостаточно прав для удаления чужой карточки');
     })
     .catch(next);
 };

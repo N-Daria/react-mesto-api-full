@@ -12,7 +12,8 @@ const { checkIfICanDeleteCard } = require('../middlewares/checkIfICanDeleteCard'
 cardRouters.post('/', celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
-    link: Joi.string().required(),
+    // eslint-disable-next-line no-useless-escape
+    link: Joi.string().required().pattern(/^(http(s)?:\/{2})((w{3}\.)?)([\w\-\._~:\/?#\[\]@!$&'\(\)*\+,;=]+)$(#)?/im),
   }).unknown(true),
 }), createCard);
 
