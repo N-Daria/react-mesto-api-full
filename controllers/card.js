@@ -12,10 +12,10 @@ module.exports.createCard = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         const newErr = new ValidationError('Переданы некорректные данные');
-        next(newErr);
+        return next(newErr);
       }
 
-      next(err);
+      return next(err);
     });
 };
 
@@ -27,10 +27,10 @@ module.exports.deleteCard = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         const newErr = new ValidationError('Передан некорректный id');
-        next(newErr);
+        return next(newErr);
       }
 
-      next(err);
+      return next(err);
     });
 };
 
@@ -53,10 +53,10 @@ module.exports.likeCard = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         const newErr = new ValidationError('Передан некорректный id');
-        next(newErr);
+        return next(newErr);
       }
 
-      next(err);
+      return next(err);
     });
 };
 
@@ -73,9 +73,9 @@ module.exports.dislikeCard = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         const newErr = new ValidationError('Передан некорректный id');
-        next(newErr);
+        return next(newErr);
       }
 
-      next(err);
+      return next(err);
     });
 };

@@ -12,10 +12,10 @@ module.exports.getUser = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         const newErr = new ValidationError('Передан некорректный id');
-        next(newErr);
+        return next(newErr);
       }
 
-      next(err);
+      return next(err);
     });
 };
 
@@ -46,10 +46,10 @@ module.exports.updateProfileInfo = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
         const newErr = new ValidationError('Переданы некорректные данные');
-        next(newErr);
+        return next(newErr);
       }
 
-      next(err);
+      return next(err);
     });
 };
 
@@ -73,10 +73,10 @@ module.exports.updateProfilePhoto = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
         const newErr = new ValidationError('Переданы некорректные данные');
-        next(newErr);
+        return next(newErr);
       }
 
-      next(err);
+      return next(err);
     });
 };
 
@@ -86,9 +86,9 @@ module.exports.getUserInfo = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         const newErr = new ValidationError('Передан некорректный id');
-        next(newErr);
+        return next(newErr);
       }
 
-      next(err);
+      return next(err);
     });
 };

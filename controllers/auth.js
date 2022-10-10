@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 const { createdSuccesCode } = require('../errors/responseStatuses');
 const { ValidationError } = require('../errors/ValidationError');
+const { AlreadyExsistsError } = require('../errors/AlreadyExsistsError');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -49,8 +50,13 @@ module.exports.createUser = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         const newErr = new ValidationError('Переданы некорректные данные');
-        next(newErr);
+        return next(newErr);
       }
-      next(err);
+      if (err.code === 11000) {
+        const newErr = new AlreadyExsistsError('Такой email уже зарегестрирован');
+        return next(newErr);
+      }
+
+      return next(err);
     });
 };
