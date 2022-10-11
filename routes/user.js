@@ -7,6 +7,7 @@ const {
   updateProfilePhoto,
   getUserInfo,
 } = require('../controllers/user');
+const { regExUrl } = require('../utils/utils');
 
 userRouters.get('/', getUsers);
 
@@ -14,8 +15,7 @@ userRouters.get('/me', getUserInfo);
 
 userRouters.patch('/me/avatar', celebrate({
   body: Joi.object().keys({
-    // eslint-disable-next-line no-useless-escape
-    avatar: Joi.string().required().min(2).pattern(/^(http(s)?:\/{2})((w{3}\.)?)([\w\-\._~:\/?#\[\]@!$&\'\(\)*\+,;=]+)$(#)?/im),
+    avatar: Joi.string().required().min(2).pattern(regExUrl),
   }).unknown(true),
 }), updateProfilePhoto);
 
