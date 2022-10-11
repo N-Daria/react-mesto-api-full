@@ -1,6 +1,7 @@
 const Card = require('../models/card');
 const { UndefinedError } = require('../errors/UndefinedError');
 const { ValidationError } = require('../errors/ValidationError');
+const { OtherUserInfoError } = require('../errors/OtherUserInfoError');
 const { createdSuccesCode, succesCode } = require('../errors/responseStatuses');
 
 module.exports.createCard = (req, res, next) => {
@@ -20,9 +21,18 @@ module.exports.createCard = (req, res, next) => {
 };
 
 module.exports.deleteCard = (req, res, next) => {
-  Card.findByIdAndRemove(req.params.cardId)
+  Card.findById(req.params.cardId)
+    .orFail(() => {
+      throw new UndefinedError('Запрашиваемая карточка не найдена');
+    })
     .then((card) => {
-      res.status(succesCode).send({ data: card });
+      const owner = card.owner.toString();
+      if (owner !== req.user._id) {
+        throw new OtherUserInfoError('Недостаточно прав для удаления чужой карточки');
+      }
+      card.delete().then(() => {
+        res.status(succesCode).send({ message: 'Карточка удалена' });
+      });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
