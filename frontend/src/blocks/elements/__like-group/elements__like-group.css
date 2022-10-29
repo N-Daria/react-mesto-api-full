@@ -1,0 +1,6 @@
+.elements__like-group {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 24px 7px 0 0;
+}

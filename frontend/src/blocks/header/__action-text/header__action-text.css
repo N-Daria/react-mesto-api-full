@@ -1,0 +1,13 @@
+.header__action-text {
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.2;
+  margin: 0;
+  text-transform: capitalize;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.header__action-text:visited {
+  color: inherit;
+}

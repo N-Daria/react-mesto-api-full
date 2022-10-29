@@ -1,0 +1,12 @@
+.profile {
+  display: flex;
+  margin: 40px auto 36px;
+  justify-content: space-between;
+}
+
+@media screen and (max-width: 899px) {
+  .profile {
+    flex-wrap: wrap;
+    max-width: 282px;
+  }
+}

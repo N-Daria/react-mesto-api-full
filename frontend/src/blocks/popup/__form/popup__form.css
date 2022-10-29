@@ -1,0 +1,20 @@
+.popup__form {
+  position: fixed;
+  background-color: white;
+  z-index: 2;
+  align-self: center;
+  max-width: 282px;
+  border-radius: 10px;
+  padding: 24px 22px;
+  color: black;
+  box-sizing: border-box;
+  min-width: 238px;
+}
+
+@media screen and (min-width: 900px) {
+  .popup__form {
+    max-width: 430px;
+    padding: 33px 36px 36px;
+    min-width: 430px;
+  }
+}
