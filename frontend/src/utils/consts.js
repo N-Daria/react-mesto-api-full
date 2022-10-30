@@ -1,19 +1,3 @@
-// export const openEdit = document.querySelector('.profile__edit');
-// export const popupEdit = document.querySelector('.edit');
-// export const editForm = popupEdit.querySelector('.editForm');
-// export const userNameInput = editForm.querySelector('input[name="name"]');
-// export const userInfoInput = editForm.querySelector('input[name="description"]');
-
-// export const addForm = document.querySelector('.addForm');
-// export const openAdd = document.querySelector('.profile__add');
-
-// export const popupView = document.querySelector('.view');
-
-// export const openPhotoChange = document.querySelector('.profile__image-container');
-// export const popupPhotoProfile = document.querySelector('.photoProfile');
-// export const PhotoChangeForm = popupPhotoProfile.querySelector('.PhotoChange');
-// export const photo = PhotoChangeForm.querySelector('.input[name="photo"]');
-
 export const settings = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
@@ -24,6 +8,6 @@ export const settings = {
 };
 
 export const serverRequestConfig = {
-  url: 'https://mesto.nomoreparties.co/v1/cohort-41',
+  url: 'https://Mesto.Daria-N.nomoredomains.icu',
   authorization: 'de7c312c-842d-4e34-9281-7fe5527921f9'
-}
+};

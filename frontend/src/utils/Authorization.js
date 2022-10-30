@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://auth.nomoreparties.co';
+export const BASE_URL = 'https://Mesto.Daria-N.nomoredomains.icu';
 
 const checkResponse = (response) => {
   return response.ok ? response.json() : Promise.reject(`Ошибка ${response.status}`);

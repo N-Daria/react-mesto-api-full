@@ -2,7 +2,6 @@ const express = require('express');
 require('dotenv').config();
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
-const path = require('path');
 const { celebrate, Joi } = require('celebrate');
 const { errors } = require('celebrate');
 const { userRouters } = require('./routes/user');
@@ -14,7 +13,7 @@ const { errorHandling } = require('./middlewares/errorHandling');
 const { regExUrl } = require('./utils/utils');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3001 } = process.env;
 const app = express();
 
 async function startServer() {
@@ -28,7 +27,6 @@ async function startServer() {
 app.use(express.json());
 
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(requestLogger);
 
