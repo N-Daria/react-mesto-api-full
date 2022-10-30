@@ -1,7 +1,4 @@
-// export const BASE_URL = 'https://backend.mesto.nomoredomains.icu';
-export const BASE_URL = 'http://localhost:3000';
-// export const BASE_URL = 'https://auth.nomoreparties.co';
-// export const BASE_URL = 'Mesto.Daria-N.nomoredomains.icu';
+export const BASE_URL = 'https://backend.mesto.nomoredomains.icu';
 
 const checkResponse = (response) => {
   return response.ok ? response.json() : Promise.reject(`Ошибка ${response.status}`);
