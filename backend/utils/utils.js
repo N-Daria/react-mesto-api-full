@@ -5,6 +5,8 @@ const allowedCorsUrl = [
   'https://praktikum.tk',
   'http://praktikum.tk',
   'localhost:3000',
+  'http://Mesto.Daria-N.nomoredomains.icu',
+  'https://Mesto.Daria-N.nomoredomains.icu',
 ];
 
 module.exports = { regExUrl, allowedCorsUrl };
