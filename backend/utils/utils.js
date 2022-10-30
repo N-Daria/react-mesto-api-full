@@ -4,7 +4,8 @@ const regExUrl = /^(http(s)?:\/{2})((w{3}\.)?)([\w\-\._~:\/?#\[\]@!$&\'\(\)*\+,;
 const allowedCorsUrl = [
   'https://praktikum.tk',
   'http://praktikum.tk',
-  'localhost:3000',
+  'http://localhost:3000',
+  'https://localhost:3000',
   'http://Mesto.Daria-N.nomoredomains.icu',
   'https://Mesto.Daria-N.nomoredomains.icu',
 ];
