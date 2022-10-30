@@ -12,6 +12,7 @@ const { authorization } = require('./middlewares/authorization');
 const { errorHandling } = require('./middlewares/errorHandling');
 const { regExUrl } = require('./utils/utils');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const { allowedCors } = require('./middlewares/cors');
 
 const { PORT = 3001 } = process.env;
 const app = express();
@@ -27,6 +28,8 @@ async function startServer() {
 app.use(express.json());
 
 app.use(cookieParser());
+
+app.use(allowedCors);
 
 app.use(requestLogger);
 
