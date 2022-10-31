@@ -8,6 +8,10 @@ export const settings = {
 };
 
 export const serverRequestConfig = {
-  url: 'https://backend.mesto.nomoredomains.icu'
-  // authorization: 'de7c312c-842d-4e34-9281-7fe5527921f9'
+  // url: 'https://backend.mesto.nomoredomains.icu',
+  url: 'http://localhost:3001',
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  },
 };

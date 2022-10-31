@@ -1,3 +1,4 @@
+require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
@@ -18,12 +19,13 @@ module.exports.login = (req, res, next) => {
         { expiresIn: '7d' },
       );
 
-      res.cookie('token', token, {
-        httpOnly: true,
-        sameSite: true,
-        maxAge: 3600000 * 24 * 7,
-      });
-      res.send({ _id: user._id });
+      // res.cookie('token', token, {
+      //   httpOnly: true,
+      //   sameSite: true,
+      //   maxAge: 3600000 * 24 * 7,
+      // });
+      // res.send({ _id: user._id });
+      res.send({ token });
     })
     .catch(next);
 };

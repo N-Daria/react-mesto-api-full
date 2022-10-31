@@ -1,9 +1,8 @@
 import { serverRequestConfig } from './consts'
-
 class Api {
   constructor(config) {
     this._url = config.url;
-    // this._authorization = config.authorization;
+    this._headers = config.headers;
   }
 
   _checkResponse(res) {
@@ -13,20 +12,24 @@ class Api {
     return Promise.reject(`Ошибка ${res.status}`);
   }
 
-  getCards() {
+  getCards(token) {
     return fetch(`${this._url}/cards`, {
-      // headers: {
-      //   authorization: this._authorization
-      // }
+      headers: {
+        // 'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
     })
       .then(this._checkResponse)
   }
 
-  getUserInfo() {
+  getUserInfo(token) {
     return fetch(`${this._url}/users/me`, {
-      // headers: {
-      //   authorization: this._authorization
-      // }
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
     })
       .then(this._checkResponse)
   }
@@ -34,10 +37,7 @@ class Api {
   patchUserInfo(data) {
     return fetch(`${this._url}/users/me`, {
       method: 'PATCH',
-      headers: {
-        // authorization: this._authorization,
-        'Content-Type': 'application/json'
-      },
+      headers: this._headers,
       body: JSON.stringify({
         name: data.name,
         about: data.about
@@ -49,10 +49,7 @@ class Api {
   patchUserPhoto(data) {
     return fetch(`${this._url}/users/me/avatar`, {
       method: 'PATCH',
-      headers: {
-        // authorization: this._authorization,
-        'Content-Type': 'application/json'
-      },
+      headers: this._headers,
       body: JSON.stringify({
         avatar: data.photo,
       })
@@ -63,10 +60,7 @@ class Api {
   postNewCard(data) {
     return fetch(`${this._url}/cards`, {
       method: 'POST',
-      headers: {
-        // authorization: this._authorization,
-        'Content-Type': 'application/json'
-      },
+      headers: this._headers,
       body: JSON.stringify({
         name: data.name,
         link: data.link
@@ -78,10 +72,7 @@ class Api {
   likeCard(cardId) {
     return fetch(`${this._url}/cards/${cardId}/likes`, {
       method: 'PUT',
-      headers: {
-        // authorization: this._authorization,
-        'Content-Type': 'application/json'
-      }
+      headers: this._headers
     })
       .then(this._checkResponse)
   }
@@ -89,10 +80,7 @@ class Api {
   deleteLikeCard(cardId) {
     return fetch(`${this._url}/cards/${cardId}/likes`, {
       method: 'DELETE',
-      headers: {
-        // authorization: this._authorization,
-        'Content-Type': 'application/json'
-      }
+      headers: this._headers
     })
       .then(this._checkResponse)
   }
@@ -100,10 +88,7 @@ class Api {
   deleteCard(cardId) {
     return fetch(`${this._url}/cards/${cardId}`, {
       method: 'DELETE',
-      headers: {
-        // authorization: this._authorization,
-        'Content-Type': 'application/json'
-      }
+      headers: this._headers
     })
       .then(this._checkResponse)
   }
