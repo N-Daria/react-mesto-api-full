@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 import logo from '../images/logo.svg';
 import succsess from '../images/succsess.svg'
@@ -42,32 +42,6 @@ function App() {
     photoUrl: '',
     header: ''
   });
-
-  // gets initial cards list and user data
-
-  useEffect(() => {
-    if (loggedIn) {
-      api.getCards()
-        .then(setCards)
-        .catch(console.log)
-    }
-  }, [loggedIn])
-
-  useEffect(() => {
-    if (loggedIn) {
-      api.getUserInfo()
-        .then((user) => {
-          setCurrentUser(user);
-        })
-        .catch(console.log)
-    }
-  }, [loggedIn])
-
-  // check if user is already registered
-
-  useEffect(() => {
-    handleTokenCheck()
-  }, [])
 
   // open/close popups 
 
@@ -222,7 +196,7 @@ function App() {
 
   // confirmation of the user's existence
 
-  function handleTokenCheck() {
+  const handleTokenCheck = useCallback(() => {
     const id = localStorage.getItem('id');
     if (id) {
       checkToken(id)
@@ -239,7 +213,35 @@ function App() {
         })
         .catch(console.log)
     }
-  }
+  }, [history]);
+
+  // gets initial cards list and user data
+
+  const token = localStorage.getItem('id');
+
+  useEffect(() => {
+    if (loggedIn) {
+      api.getCards(token)
+        .then(setCards)
+        .catch(console.log)
+    }
+  }, [loggedIn, token])
+
+  useEffect(() => {
+    if (loggedIn) {
+      api.getUserInfo(token)
+        .then((user) => {
+          setCurrentUser(user);
+        })
+        .catch(console.log)
+    }
+  }, [loggedIn, token])
+
+  // check if user is already registered
+
+  useEffect(() => {
+    handleTokenCheck()
+  }, [handleTokenCheck])
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
