@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const { celebrate, Joi } = require('celebrate');
 const { errors } = require('celebrate');
+// const cors = require('cors');
 const { userRouters } = require('./routes/user');
 const { cardRouters } = require('./routes/card');
 const { undefinedPage } = require('./controllers/undefinedPage');
@@ -36,6 +37,12 @@ app.use(requestLogger);
 app.use('/users', authorization, userRouters);
 
 app.use('/cards', authorization, cardRouters);
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({

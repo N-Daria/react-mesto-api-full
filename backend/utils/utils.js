@@ -8,8 +8,9 @@ const allowedCorsUrl = [
   'https://localhost:3002',
   'http://Mesto.Daria-N.nomoredomains.icu',
   'http://mesto.Daria-N.nomoredomains.icu',
-  'https://Mesto.Daria-N.nomoredomains.icu',
+  'http://mesto.daria-n.nomoredomains.icu',
   'http://127.0.0.1',
+  'http://localhost:3000',
 ];
 
 module.exports = { regExUrl, allowedCorsUrl };
