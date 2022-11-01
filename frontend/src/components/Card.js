@@ -4,7 +4,7 @@ import React from "react";
 export default function Card(props) {
   const currentUserContext = React.useContext(CurrentUserContext);
 
-  const isOwn = currentUserContext._id === props.owner._id;
+  const isOwn = currentUserContext._id === props.owner;
   const removeButtonVisibility = isOwn ? 'elements__remove' : 'elements__remove_hidden';
 
   const isLiked = props.likes.some(i => i._id === currentUserContext._id);
