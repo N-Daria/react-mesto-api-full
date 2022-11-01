@@ -229,19 +229,11 @@ function App() {
 
   useEffect(() => {
     if (loggedIn) {
-      api.getCards(token)
+      Promise.all([api.getCards(token), api.getUserInfo(token)])
         .then((res) => {
-          setCards(res.data)
-        })
-        .catch(console.log)
-    }
-  }, [loggedIn, token])
-
-  useEffect(() => {
-    if (loggedIn) {
-      api.getUserInfo(token)
-        .then((user) => {
-          setCurrentUser(user.data);
+          const [cards, info] = res;
+          setCards(cards.data);
+          setCurrentUser(info.data);
         })
         .catch(console.log)
     }

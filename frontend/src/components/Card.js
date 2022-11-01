@@ -7,7 +7,7 @@ export default function Card(props) {
   const isOwn = currentUserContext._id === props.owner;
   const removeButtonVisibility = isOwn ? 'elements__remove' : 'elements__remove_hidden';
 
-  const isLiked = props.likes.some(i => i._id === currentUserContext._id);
+  const isLiked = props.likes.some(i => i === currentUserContext._id);
   const cardLikeButtonClassName = isLiked ? 'elements__like_active' : '';
 
   function handleClick() {

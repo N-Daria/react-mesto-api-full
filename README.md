@@ -8,3 +8,5 @@ IP 51.250.84.123
 Frontend https://mesto.daria-n.nomoredomains.icu
 Backend https://backend.mesto.nomoredomains.icu
 
+
+Переписать хранение jwt-токена (куки) 
