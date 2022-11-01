@@ -5,7 +5,6 @@ const { AuthentificationError } = require('../errors/AuthentificationError');
 const { JWT_SECRET, NODE_ENV } = process.env;
 
 module.exports.authorization = (req, res, next) => {
-  // const authorization = req.cookies.token;
   let { authorization } = req.headers;
 
   authorization = authorization.replace('Bearer', '');

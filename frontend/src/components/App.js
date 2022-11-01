@@ -20,7 +20,7 @@ import InfoTooltip from "./InfoTooltip";
 import { checkToken, register, authorize } from '../utils/Authorization';
 
 function App() {
-
+  const token = localStorage.getItem('id');
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
@@ -68,9 +68,10 @@ function App() {
   // popups submit changes
 
   function handleUpdateUser(data) {
-    api.patchUserInfo(data)
+    api.patchUserInfo(data, token)
       .then((result) => {
-        setCurrentUser(result);
+        setCurrentUser(result.data);
+        closeAllPopups();
       })
       .catch((err) => {
         console.log(err)
@@ -78,9 +79,10 @@ function App() {
   }
 
   function handleUpdateAvatar(data) {
-    api.patchUserPhoto(data)
+    api.patchUserPhoto(data, token)
       .then((result) => {
-        setCurrentUser(result);
+        setCurrentUser(result.data);
+        closeAllPopups();
       })
       .catch((err) => {
         console.log(err)
@@ -88,9 +90,10 @@ function App() {
   }
 
   function handleAddPlaceSubmit(data) {
-    api.postNewCard(data)
+    api.postNewCard(data, token)
       .then((newCard) => {
-        setCards([newCard, ...cards]);
+        setCards([newCard.data, ...cards]);
+        closeAllPopups();
       })
       .catch((err) => {
         console.log(err)
@@ -100,26 +103,33 @@ function App() {
   // card actions
 
   function handleCardDelete(cardId) {
-    api.deleteCard(cardId)
+    api.deleteCard(cardId, token)
       .then((card) => {
-        setCards(state => state.filter(card => card._id !== cardId))
+        return setCards((state) => {
+          return state.filter(card => card._id !== cardId)
+        })
       })
       .catch(console.log)
   }
 
   function handleCardLike(cardId, notLiked) {
     function onSetCards(newCard) {
-      setCards(state => state.map(cardInCards => cardInCards._id === cardId ? newCard : cardInCards));
+      return setCards((state) => {
+        return state.map((cardInCards) => {
+          return cardInCards._id === cardId ? newCard : cardInCards
+        });
+      }
+      );
     }
 
     notLiked ?
-      api.likeCard(cardId)
+      api.likeCard(cardId, token)
         .then((newCard) => {
-          onSetCards(newCard);
+          onSetCards(newCard.data);
         })
-      : api.deleteLikeCard(cardId)
+      : api.deleteLikeCard(cardId, token)
         .then((newCard) => {
-          onSetCards(newCard);
+          onSetCards(newCard.data);
         })
         .catch(console.log)
   }
@@ -217,12 +227,12 @@ function App() {
 
   // gets initial cards list and user data
 
-  const token = localStorage.getItem('id');
-
   useEffect(() => {
     if (loggedIn) {
       api.getCards(token)
-        .then(setCards)
+        .then((res) => {
+          setCards(res.data)
+        })
         .catch(console.log)
     }
   }, [loggedIn, token])
@@ -231,7 +241,7 @@ function App() {
     if (loggedIn) {
       api.getUserInfo(token)
         .then((user) => {
-          setCurrentUser(user);
+          setCurrentUser(user.data);
         })
         .catch(console.log)
     }

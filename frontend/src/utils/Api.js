@@ -15,10 +15,9 @@ class Api {
   getCards(token) {
     return fetch(`${this._url}/cards`, {
       headers: {
-        // 'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }
+        ...this._headers,
+        'Authorization': token
+      },
     })
       .then(this._checkResponse)
   }
@@ -26,18 +25,20 @@ class Api {
   getUserInfo(token) {
     return fetch(`${this._url}/users/me`, {
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }
+        ...this._headers,
+        'Authorization': token
+      },
     })
       .then(this._checkResponse)
   }
 
-  patchUserInfo(data) {
+  patchUserInfo(data, token) {
     return fetch(`${this._url}/users/me`, {
       method: 'PATCH',
-      headers: this._headers,
+      headers: {
+        ...this._headers,
+        'Authorization': token
+      },
       body: JSON.stringify({
         name: data.name,
         about: data.about
@@ -46,10 +47,13 @@ class Api {
       .then(this._checkResponse)
   }
 
-  patchUserPhoto(data) {
+  patchUserPhoto(data, token) {
     return fetch(`${this._url}/users/me/avatar`, {
       method: 'PATCH',
-      headers: this._headers,
+      headers: {
+        ...this._headers,
+        'Authorization': token
+      },
       body: JSON.stringify({
         avatar: data.photo,
       })
@@ -57,10 +61,13 @@ class Api {
       .then(this._checkResponse)
   }
 
-  postNewCard(data) {
+  postNewCard(data, token) {
     return fetch(`${this._url}/cards`, {
       method: 'POST',
-      headers: this._headers,
+      headers: {
+        ...this._headers,
+        'Authorization': token
+      },
       body: JSON.stringify({
         name: data.name,
         link: data.link
@@ -69,26 +76,35 @@ class Api {
       .then(this._checkResponse)
   }
 
-  likeCard(cardId) {
+  likeCard(cardId, token) {
     return fetch(`${this._url}/cards/${cardId}/likes`, {
       method: 'PUT',
-      headers: this._headers
+      headers: {
+        ...this._headers,
+        'Authorization': token
+      }
     })
       .then(this._checkResponse)
   }
 
-  deleteLikeCard(cardId) {
+  deleteLikeCard(cardId, token) {
     return fetch(`${this._url}/cards/${cardId}/likes`, {
       method: 'DELETE',
-      headers: this._headers
+      headers: {
+        ...this._headers,
+        'Authorization': token
+      },
     })
       .then(this._checkResponse)
   }
 
-  deleteCard(cardId) {
+  deleteCard(cardId, token) {
     return fetch(`${this._url}/cards/${cardId}`, {
       method: 'DELETE',
-      headers: this._headers
+      headers: {
+        ...this._headers,
+        'Authorization': token
+      },
     })
       .then(this._checkResponse)
   }
