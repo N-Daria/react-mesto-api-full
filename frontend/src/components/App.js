@@ -159,11 +159,11 @@ function App() {
   function handleRegister(data) {
     register(data)
       .then((res) => {
-        if (res._id) {
-          localStorage.setItem('id', data._id);
+        if (res.data._id) {
+          localStorage.setItem('id', res.data._id);
           setUserAuthData({
-            email: data.email,
-            id: data._id
+            email: res.data.email,
+            id: res.data._id
           })
         }
         setLoggedIn(true);
