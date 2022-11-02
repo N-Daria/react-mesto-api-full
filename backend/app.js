@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const { celebrate, Joi } = require('celebrate');
 const { errors } = require('celebrate');
-// const cors = require('cors');
 const { userRouters } = require('./routes/user');
 const { cardRouters } = require('./routes/card');
 const { undefinedPage } = require('./controllers/undefinedPage');
@@ -48,7 +47,7 @@ app.post('/signin', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().min(2).email(),
     password: Joi.string().required().min(2),
-  }).unknown(true),
+  }),
 }), login);
 
 app.post('/signup', celebrate({
@@ -58,10 +57,10 @@ app.post('/signup', celebrate({
     avatar: Joi.string().pattern(regExUrl),
     email: Joi.string().required().min(2).email(),
     password: Joi.string().required(),
-  }).unknown(true),
+  }),
 }), createUser);
 
-app.use('*', undefinedPage);
+app.use('*', authorization, undefinedPage);
 
 app.use(errorLogger);
 

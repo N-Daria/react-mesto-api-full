@@ -2,7 +2,7 @@ const Card = require('../models/card');
 const { UndefinedError } = require('../errors/UndefinedError');
 const { ValidationError } = require('../errors/ValidationError');
 const { OtherUserInfoError } = require('../errors/OtherUserInfoError');
-const { createdSuccesCode, succesCode } = require('../errors/responseStatuses');
+const { createdSuccesCode } = require('../errors/responseStatuses');
 
 module.exports.createCard = (req, res, next) => {
   const owner = req.user._id;
@@ -31,8 +31,9 @@ module.exports.deleteCard = (req, res, next) => {
         throw new OtherUserInfoError('Недостаточно прав для удаления чужой карточки');
       }
       card.delete().then(() => {
-        res.status(succesCode).send({ message: 'Карточка удалена' });
-      });
+        res.send({ message: 'Карточка удалена' });
+      })
+        .catch(next);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
@@ -46,7 +47,7 @@ module.exports.deleteCard = (req, res, next) => {
 
 module.exports.getCards = (req, res, next) => {
   Card.find({})
-    .then((cards) => res.status(succesCode).send({ data: cards }))
+    .then((cards) => res.send({ data: cards }))
     .catch(next);
 };
 
@@ -79,7 +80,7 @@ module.exports.dislikeCard = (req, res, next) => {
     .orFail(() => {
       throw new UndefinedError('Запрашиваемая карточка не найдена');
     })
-    .then((card) => res.status(succesCode).send({ data: card }))
+    .then((card) => res.send({ data: card }))
     .catch((err) => {
       if (err.name === 'CastError') {
         const newErr = new ValidationError('Передан некорректный id');

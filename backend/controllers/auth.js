@@ -40,7 +40,14 @@ module.exports.createUser = (req, res, next) => {
       password: hash,
     }))
     .then((user) => {
-      res.status(createdSuccesCode).send({ data: user });
+      const data = {
+        name: user.name,
+        about: user.about,
+        avatar: user.avatar,
+        email: user.email,
+        _id: user._id,
+      };
+      res.status(createdSuccesCode).send({ data });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {

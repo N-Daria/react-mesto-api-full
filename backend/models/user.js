@@ -21,8 +21,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     validate: {
       validator: (v) => {
-        // eslint-disable-next-line no-useless-escape
-        const regex = /^(http(s)?:\/{2})((w{3}\.)?)([\w\-\._~:\/?#\[\]@!$&'\(\)*\+,;=]+)$(#)?/igm;
+        const regex = /^(http(s)?:\/{2})((w{3}\.)?)(([\w-]{1,})(\.))+([\w\-\/\.~:?#\[\]@!$&'\(\)*\+,;=]+)()?([\w])?$(#)?/im;
         return v.match(regex);
       },
       message: 'Неправильный формат ссылки',

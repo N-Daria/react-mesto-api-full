@@ -1,6 +1,6 @@
 const { UndefinedError } = require('../errors/UndefinedError');
 
-module.exports.undefinedPage = (req, res) => {
+module.exports.undefinedPage = (req, res, next) => {
   const newErr = new UndefinedError('Запрашиваемая страница не найдена');
-  return res.status(newErr.statusCode).send({ message: newErr.message });
+  return next(newErr);
 };

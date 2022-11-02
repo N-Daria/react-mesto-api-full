@@ -8,7 +8,7 @@ export const settings = {
 };
 
 export const serverRequestConfig = {
-  url: 'http://backend.mesto.nomoredomains.icu',
+  url: 'https://backend.mesto.nomoredomains.icu',
   // url: 'http://localhost:3001',
   headers: {
     'Accept': 'application/json',
