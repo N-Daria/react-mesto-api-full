@@ -13,7 +13,7 @@ const { regExUrl } = require('./utils/utils');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { allowedCors } = require('./middlewares/cors');
 
-const { PORT = 3001 } = process.env;
+const { PORT = 3002 } = process.env;
 const app = express();
 
 async function startServer() {

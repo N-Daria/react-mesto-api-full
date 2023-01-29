@@ -8,8 +8,8 @@ export const settings = {
 };
 
 export const serverRequestConfig = {
-  url: 'https://backend.mesto.nomoredomains.icu',
-  // url: 'http://localhost:3001',
+  url: 'http://api.mesto.daria.nomoredomainsclub.ru',
+  // url: 'http://localhost:3002',
   headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json'
